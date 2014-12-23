@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.joda.time.contrib.jsptag;
+package net.sargue.time.jsptags;
 
 import javax.servlet.jsp.JspTagException;
 
@@ -27,7 +27,7 @@ import javax.servlet.jsp.JspTagException;
  * @author Jan Luehe
  * @author Jim Newsham
  */
-public class SetDateTimeZoneTag extends SetDateTimeZoneSupport {
+public class SetZoneIdIdTag extends SetZoneIdSupport {
 
     /**
      * Sets the value attribute.

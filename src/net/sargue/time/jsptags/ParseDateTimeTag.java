@@ -1,6 +1,6 @@
 /*
  * Copyright 1999-2004 The Apache Software Foundation.
- * Modifications, Copyright 2005 Stephen Colebourne
+ * Modifications, Copyright 2005 Stephen Colebourne, 2014 Sergi Baila
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.joda.time.contrib.jsptag;
-
-import java.util.Locale;
+package net.sargue.time.jsptags;
 
 import javax.servlet.jsp.JspTagException;
-
-import org.joda.time.DateTimeZone;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.util.Locale;
 
 /**
  * <p>
@@ -29,8 +28,10 @@ import org.joda.time.DateTimeZone;
  * 
  * @author Jan Luehe
  * @author Jim Newsham
+ * @author Sergi Baila
  */
 
+@SuppressWarnings("UnusedDeclaration")
 public class ParseDateTimeTag extends ParseDateTimeSupport {
 
     /**
@@ -66,19 +67,20 @@ public class ParseDateTimeTag extends ParseDateTimeSupport {
      * 
      * @param dtz  the zone
      */
-    public void setDateTimeZone(Object dtz) throws JspTagException {
+    public void setZoneId(Object dtz) throws JspTagException {
         if (dtz == null || dtz instanceof String
                 && ((String) dtz).length() == 0) {
-            this.dateTimeZone = null;
-        } else if (dtz instanceof DateTimeZone) {
-            this.dateTimeZone = (DateTimeZone) dtz;
-        } else {
+            this.zoneId = null;
+        } else if (dtz instanceof ZoneId) {
+            this.zoneId = (ZoneId) dtz;
+        } else if (dtz instanceof String) {
             try {
-                this.dateTimeZone = DateTimeZone.forID((String) dtz);
+                this.zoneId = ZoneId.of((String) dtz);
             } catch (IllegalArgumentException iae) {
-                this.dateTimeZone = DateTimeZone.UTC;
+                this.zoneId = ZoneOffset.UTC;
             }
-        }
+        } else
+            throw new JspTagException("Can only accept ZoneId or String objects.");
     }
 
     /**
@@ -92,9 +94,10 @@ public class ParseDateTimeTag extends ParseDateTimeSupport {
             this.locale = null;
         } else if (loc instanceof Locale) {
             this.locale = (Locale) loc;
-        } else {
+        } else if (loc instanceof String) {
             locale = Util.parseLocale((String) loc);
-        }
+        } else
+            throw new JspTagException("Can only accept Locale or String objects.");
     }
 
 }

@@ -5,18 +5,18 @@
     xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
     version="2.0">
     
-  <description>Joda Time Tag Library</description>
-  <display-name>Joda Time</display-name>
-  <tlib-version>1.1</tlib-version>
-  <short-name>joda</short-name>
-  <uri>http://www.joda.org/joda/time/tags</uri>
+  <description>Java Time Tag Library</description>
+  <display-name>Java Time</display-name>
+  <tlib-version>0.1</tlib-version>
+  <short-name>javatime</short-name>
+  <uri>http://sargue.net/jsptags/time</uri>
 
   <validator>
     <description>
         Provides core validation features for JSTL tags.
     </description>
     <validator-class>
-        org.joda.time.contrib.jsptag.JodaTagLibraryValidator
+        net.sargue.time.jsptags.JodaTagLibraryValidator
     </validator-class>
   </validator>
 
@@ -25,15 +25,15 @@
         Specifies the time zone for any time formatting or parsing actions
         nested in its body
     </description>
-    <name>dateTimeZone</name>
-    <tag-class>org.joda.time.contrib.jsptag.DateTimeZoneTag</tag-class>
+    <name>zoneId</name>
+    <tag-class>net.sargue.time.jsptags.ZoneIdTag</tag-class>
     <body-content>JSP</body-content>
     <attribute>
         <description>
 The time zone. A String value is interpreted as
 a time zone ID. This may be one of the time zone
-IDs supported by the Joda. See
-org.joda.time.DateTimeZone for more information on
+IDs supported by the JRE. See
+java.time.ZoneId for more information on
 supported time zone formats.
         </description>
         <name>value</name>
@@ -46,15 +46,15 @@ supported time zone formats.
     <description>
         Stores the given time zone in the time zone configuration variable
     </description>
-    <name>setDateTimeZone</name>
-    <tag-class>org.joda.time.contrib.jsptag.SetDateTimeZoneTag</tag-class>
+    <name>setZoneId</name>
+    <tag-class>net.sargue.time.jsptags.SetZoneIdIdTag</tag-class>
     <body-content>empty</body-content>
     <attribute>
         <description>
 The time zone. A String value is interpreted as
 a time zone ID. This may be one of the time zone
-IDs supported by the Joda. See
-org.joda.time.DateTimeZone for more information on
+IDs supported by the JRE. See
+java.time.ZoneId for more information on
 supported time zone formats.
         </description>
         <name>value</name>
@@ -65,7 +65,7 @@ supported time zone formats.
         <description>
 Name of the exported scoped variable which
 stores the time zone of type
-java.util.DateTimeZone.
+java.time.ZoneId.
         </description>
         <name>var</name>
         <required>false</required>
@@ -87,7 +87,7 @@ variable.
         Formats a Joda instant or partial using the supplied style or pattern
     </description>
     <name>format</name>
-    <tag-class>org.joda.time.contrib.jsptag.FormatTag</tag-class>
+    <tag-class>net.sargue.time.jsptags.FormatTag</tag-class>
     <body-content>empty</body-content>
     <attribute>
         <description>
@@ -122,7 +122,7 @@ for more information on supported patterns.
 Time zone in which to represent the formatted
 time.
         </description>
-        <name>dateTimeZone</name>
+        <name>zoneId</name>
         <required>false</required>
         <rtexprvalue>true</rtexprvalue>
     </attribute>
@@ -160,7 +160,7 @@ formatting.
         Parses the string representation of a date/time
     </description>
     <name>parseDateTime</name>
-    <tag-class>org.joda.time.contrib.jsptag.ParseDateTimeTag</tag-class>
+    <tag-class>net.sargue.time.jsptags.ParseDateTimeTag</tag-class>
     <body-content>JSP</body-content>
     <attribute>
         <description>

@@ -1,6 +1,6 @@
 /*
  * Copyright 1999-2004 The Apache Software Foundation.
- * Modifications, Copyright 2005 Stephen Colebourne
+ * Modifications, Copyright 2005 Stephen Colebourne, 2014 Sergi Baila
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,22 +14,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.joda.time.contrib.jsptag;
+package net.sargue.time.jsptags;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.jstl.core.Config;
 import javax.servlet.jsp.tagext.TagSupport;
-
-import org.joda.time.DateTimeZone;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 
 /**
  * Support for tag handlers for &lt;setDateTimeZone&gt;.
  * 
  * @author Jan Luehe
  * @author Jim Newsham
+ * @author Sergi Baila
  */
-public abstract class SetDateTimeZoneSupport extends TagSupport {
+public abstract class SetZoneIdSupport extends TagSupport {
 
     /** The value attribute. */
     protected Object value;
@@ -41,7 +42,7 @@ public abstract class SetDateTimeZoneSupport extends TagSupport {
     /**
      * Constructor.
      */
-    public SetDateTimeZoneSupport() {
+    public SetZoneIdSupport() {
         super();
         init();
     }
@@ -53,32 +54,34 @@ public abstract class SetDateTimeZoneSupport extends TagSupport {
         scope = PageContext.PAGE_SCOPE;
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void setScope(String scope) {
         this.scope = Util.getScope(scope);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void setVar(String var) {
         this.var = var;
     }
 
     public int doEndTag() throws JspException {
-        DateTimeZone dateTimeZone = null;
+        ZoneId dateTimeZone;
         if (value == null) {
-            dateTimeZone = DateTimeZone.UTC;
+            dateTimeZone = ZoneOffset.UTC;
         } else if (value instanceof String) {
             try {
-                dateTimeZone = DateTimeZone.forID((String) value);
+                dateTimeZone = ZoneId.of((String) value);
             } catch (IllegalArgumentException iae) {
-                dateTimeZone = DateTimeZone.UTC;
+                dateTimeZone = ZoneOffset.UTC;
             }
         } else {
-            dateTimeZone = (DateTimeZone) value;
+            dateTimeZone = (ZoneId) value;
         }
 
         if (var != null) {
             pageContext.setAttribute(var, dateTimeZone, scope);
         } else {
-            Config.set(pageContext, DateTimeZoneSupport.FMT_TIME_ZONE,
+            Config.set(pageContext, ZoneIdSupport.FMT_TIME_ZONE,
                     dateTimeZone, scope);
         }
 

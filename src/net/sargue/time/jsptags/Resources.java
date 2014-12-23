@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package org.joda.time.contrib.jsptag;
+package net.sargue.time.jsptags;
 
 import java.text.MessageFormat;
 import java.util.MissingResourceException;
@@ -39,13 +39,14 @@ import java.util.ResourceBundle;
  *
  * @author Shawn Bayern
  */
+@SuppressWarnings("UnusedDeclaration")
 public class Resources {
 
     //*********************************************************************
     // Static data
 
     /** The location of our resources. */
-    private static final String RESOURCE_LOCATION = "org.joda.time.contrib.jsptag.Resources";
+    private static final String RESOURCE_LOCATION = "Resources";
 
     /** Our class-wide ResourceBundle. */
     private static ResourceBundle rb = ResourceBundle.getBundle(RESOURCE_LOCATION);

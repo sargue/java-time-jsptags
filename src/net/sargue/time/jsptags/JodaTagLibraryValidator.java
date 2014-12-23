@@ -1,6 +1,6 @@
 /*
  * Copyright 1999-2004 The Apache Software Foundation.
- * Modifications, Copyright 2005 Stephen Colebourne
+ * Modifications, Copyright 2005 Stephen Colebourne, 2014 Sergi Baila
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.joda.time.contrib.jsptag;
+package net.sargue.time.jsptags;
 
-import java.io.IOException;
-import java.util.Vector;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 import javax.servlet.jsp.tagext.PageData;
 import javax.servlet.jsp.tagext.TagLibraryValidator;
@@ -25,10 +26,8 @@ import javax.servlet.jsp.tagext.ValidationMessage;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
+import java.io.IOException;
+import java.util.Vector;
 
 /**
  * <p>
@@ -47,6 +46,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * @author Shawn Bayern
  * @author Jan Luehe
  * @author Jim Newsham
+ * @author Sergi Baila
  */
 public class JodaTagLibraryValidator extends TagLibraryValidator {
 
@@ -82,7 +82,7 @@ public class JodaTagLibraryValidator extends TagLibraryValidator {
     // *********************************************************************
     // Constants
     // tag names
-    private static final String SET_DATETIMEZONE = "setDateTimeZone";
+    private static final String SET_ZONEID = "setZoneId";
 
     private static final String PARSE_DATETIME = "parseDateTime";
 
@@ -107,9 +107,6 @@ public class JodaTagLibraryValidator extends TagLibraryValidator {
     private static final String SESSION_SCOPE = "session";
 
     private static final String APPLICATION_SCOPE = "application";
-
-    // Relevant URIs
-    private final String JSP = "http://java.sun.com/JSP/Page";
 
     // *********************************************************************
     // Validation and configuration state (protected)
@@ -155,15 +152,6 @@ public class JodaTagLibraryValidator extends TagLibraryValidator {
             // save the prefix
             this.prefix = prefix;
 
-            // parse parameters if necessary
-            /*
-             * try { if (config == null) { configure((String)
-             * getInitParameters().get(EXP_ATT_PARAM)); } } catch
-             * (NoSuchElementException ex) { // parsing error return
-             * vmFromString(Resources.getMessage("TLV_PARAMETER_ERROR",
-             * EXP_ATT_PARAM)); }
-             */
-
             DefaultHandler h = new Handler();
 
             // parse the page
@@ -186,19 +174,6 @@ public class JodaTagLibraryValidator extends TagLibraryValidator {
             return vmFromString(ex.toString());
         }
     }
-
-    /*
-     * // delegate validation to the appropriate expression language private
-     * String validateExpression(String elem, String att, String expr) { //
-     * let's just use the cache kept by the ExpressionEvaluatorManager
-     * ExpressionEvaluator current; try { current =
-     * ExpressionEvaluatorManager.getEvaluatorByName(
-     * ExpressionEvaluatorManager.EVALUATOR_CLASS); } catch (JspException ex) { //
-     * (using JspException here feels ugly, but it's what EEM uses) return
-     * ex.getMessage(); } String response = current.validate(att, expr); return
-     * (response == null) ? null : "tag = '" + elem + "' / attribute = '" + att +
-     * "': " + response; }
-     */
 
     // utility methods to help us match elements in our tagset
     private boolean isTag(String tagUri, String tagLn, String matchUri,
@@ -234,6 +209,7 @@ public class JodaTagLibraryValidator extends TagLibraryValidator {
      */
     private void fail(String message) {
 //        failed = true;
+        //noinspection unchecked
         messageVector.add(new ValidationMessage(lastElementId, message));
     }
 
@@ -245,12 +221,9 @@ public class JodaTagLibraryValidator extends TagLibraryValidator {
     // returns true if the 'scope' attribute is valid
     protected boolean hasNoInvalidScope(Attributes a) {
         String scope = a.getValue(SCOPE);
-        if ((scope != null) && !scope.equals(PAGE_SCOPE)
-                && !scope.equals(REQUEST_SCOPE) && !scope.equals(SESSION_SCOPE)
-                && !scope.equals(APPLICATION_SCOPE)) {
-            return false;
-        }
-        return true;
+        return !((scope != null) && !scope.equals(PAGE_SCOPE)
+                 && !scope.equals(REQUEST_SCOPE) && !scope.equals(SESSION_SCOPE)
+                 && !scope.equals(APPLICATION_SCOPE));
     }
 
     // returns true if the 'var' attribute is empty
@@ -268,21 +241,6 @@ public class JodaTagLibraryValidator extends TagLibraryValidator {
         int colon = qname.indexOf(":");
         return (colon == -1) ? qname : qname.substring(colon + 1);
     }
-
-    // parses our configuration parameter for element:attribute pairs
-    /*
-     * private void configure(String info) { // construct our configuration map
-     * config = new HashMap();
-     *  // leave the map empty if we have nothing to configure if (info == null) {
-     * return; }
-     *  // separate parameter into space-separated tokens and store them
-     * StringTokenizer st = new StringTokenizer(info); while
-     * (st.hasMoreTokens()) { String pair = st.nextToken(); StringTokenizer
-     * pairTokens = new StringTokenizer(pair, ":"); String element =
-     * pairTokens.nextToken(); String attribute = pairTokens.nextToken(); Object
-     * atts = config.get(element); if (atts == null) { atts = new HashSet();
-     * config.put(element, atts); } ((Set) atts).add(attribute); } }
-     */
 
     // constructs a ValidationMessage[] from a single String and no ID
     private static ValidationMessage[] vmFromString(String message) {
@@ -302,8 +260,6 @@ public class JodaTagLibraryValidator extends TagLibraryValidator {
      * SAX event handler.
      */
     private class Handler extends DefaultHandler {
-        // parser state
-        private int depth = 0;
 
         private String lastElementName = null;
 
@@ -329,16 +285,6 @@ public class JodaTagLibraryValidator extends TagLibraryValidator {
                 fail(Resources.getMessage("TLV_ILLEGAL_BODY", lastElementName));
             }
 
-            // validate expression syntax if we need to
-            /*
-             * Set expAtts; if (qn.startsWith(prefix + ":") && (expAtts = (Set)
-             * config.get(ln)) != null) { for (int i = 0; i < a.getLength();
-             * i++) { String attName = a.getLocalName(i); if
-             * (expAtts.contains(attName)) { String vMsg =
-             * validateExpression(ln, attName, a.getValue(i)); if (vMsg != null) {
-             * fail(vMsg); } } } }
-             */
-
             // validate attributes
             if (qn.startsWith(prefix + ":") && !hasNoInvalidScope(a)) {
                 fail(Resources.getMessage("TLV_INVALID_ATTRIBUTE", SCOPE, qn, a
@@ -348,7 +294,7 @@ public class JodaTagLibraryValidator extends TagLibraryValidator {
                 fail(Resources.getMessage("TLV_EMPTY_VAR", qn));
             }
             if (qn.startsWith(prefix + ":")
-                    && !isJodaTag(ns, ln, SET_DATETIMEZONE)
+                    && !isJodaTag(ns, ln, SET_ZONEID)
                     && hasDanglingScope(a)) {
                 fail(Resources.getMessage("TLV_DANGLING_SCOPE", qn));
             }
@@ -368,10 +314,9 @@ public class JodaTagLibraryValidator extends TagLibraryValidator {
 
             // record the most recent tag (for error reporting)
             lastElementName = qn;
-            lastElementId = a.getValue(JSP, "id");
+            lastElementId = a.getValue("http://java.sun.com/JSP/Page", "id");
 
             // we're a new element, so increase depth
-            depth++;
         }
 
         public void characters(char[] ch, int start, int length) {
@@ -400,9 +345,6 @@ public class JodaTagLibraryValidator extends TagLibraryValidator {
                 fail(Resources.getMessage("TLV_MISSING_BODY", lastElementName));
             }
             bodyIllegal = false; // reset: we've left the tag
-
-            // update our depth
-            depth--;
         }
     }
 

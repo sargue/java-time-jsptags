@@ -1,6 +1,6 @@
 /*
  * Copyright 1999-2004 The Apache Software Foundation.
- * Modifications, Copyright 2005 Stephen Colebourne
+ * Modifications, Copyright 2005 Stephen Colebourne, 2014 Sergi Baila
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,22 +14,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-package org.joda.time.contrib.jsptag;
-
-import java.io.IOException;
-import java.text.DateFormat;
-import java.util.Locale;
+package net.sargue.time.jsptags;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.TagSupport;
-
-import org.joda.time.DateTimeZone;
-import org.joda.time.ReadableInstant;
-import org.joda.time.ReadablePartial;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
+import java.util.Locale;
 
 /**
  * Support for tag handlers for &lt;formatDate&gt;, the date and time
@@ -37,6 +33,7 @@ import org.joda.time.format.DateTimeFormatter;
  *
  * @author Jan Luehe
  * @author Jim Newsham
+ * @author Sergi Baila
  */
 public abstract class FormatSupport extends TagSupport {
 
@@ -46,8 +43,8 @@ public abstract class FormatSupport extends TagSupport {
     protected String pattern;
     /** The style attribute. */
     protected String style;
-    /** The dateTimeZone attribute. */
-    protected DateTimeZone dateTimeZone;
+    /** The zoneId attribute. */
+    protected ZoneId zoneId;
     /** The locale attribute. */
     protected Locale locale;
     /** The var attribute. */
@@ -68,15 +65,17 @@ public abstract class FormatSupport extends TagSupport {
         value = null;
         pattern = null;
         style = null;
-        dateTimeZone = null;
+        zoneId = null;
         locale = null;
         scope = PageContext.PAGE_SCOPE;
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void setVar(String var) {
         this.var = var;
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public void setScope(String scope) {
         this.scope = Util.getScope(scope);
     }
@@ -95,18 +94,18 @@ public abstract class FormatSupport extends TagSupport {
         // Create formatter
         DateTimeFormatter formatter;
         if (pattern != null) {
-            formatter = DateTimeFormat.forPattern(pattern);
+            formatter = DateTimeFormatter.ofPattern(pattern);
         } else if (style != null) {
-            formatter = DateTimeFormat.forStyle(style);
+            formatter = Util.createFormatterForStyle(style);
         } else {
             // use a medium date (no time) style by default; same as jstl
-            formatter = DateTimeFormat.mediumDate();
+            formatter = Util.createFormatterForStyle("M-");
         }
 
         // set formatter locale
         Locale locale = this.locale;
         if (locale == null) {
-            locale = Util.getFormattingLocale(pageContext, this, true,
+            locale = Util.getFormattingLocale(pageContext, true,
                     DateFormat.getAvailableLocales());
         }
         if (locale != null) {
@@ -114,9 +113,9 @@ public abstract class FormatSupport extends TagSupport {
         }
 
         // set formatter timezone
-        DateTimeZone tz = this.dateTimeZone;
+        ZoneId tz = this.zoneId;
         if (tz == null) {
-            tz = DateTimeZoneSupport.getDateTimeZone(pageContext, this);
+            tz = ZoneIdSupport.getZoneId(pageContext, this);
         }
         if (tz != null) {
             formatter = formatter.withZone(tz);
@@ -124,13 +123,11 @@ public abstract class FormatSupport extends TagSupport {
 
         // format value
         String formatted;
-        if (value instanceof ReadableInstant) {
-            formatted = formatter.print((ReadableInstant) value);
-        } else if (value instanceof ReadablePartial) {
-            formatted = formatter.print((ReadablePartial) value);
+        if (value instanceof TemporalAccessor) {
+            formatted = formatter.format((TemporalAccessor) value);
         } else {
             throw new JspException(
-                "value attribute of format tag must be a ReadableInstant or ReadablePartial," +
+                "value attribute of format tag must be a TemporalAccessor," +
                 " was: " + value.getClass().getName()); 
         }
 
@@ -151,5 +148,4 @@ public abstract class FormatSupport extends TagSupport {
     public void release() {
         init();
     }
-
 }

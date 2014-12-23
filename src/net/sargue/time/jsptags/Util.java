@@ -1,6 +1,6 @@
 /*
  * Copyright 1999-2004 The Apache Software Foundation.
- * Modifications, Copyright 2005 Stephen Colebourne
+ * Modifications, Copyright 2005 Stephen Colebourne, 2014 Sergi Baila
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,22 +14,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.joda.time.contrib.jsptag;
-
-import java.text.DateFormat;
-import java.text.NumberFormat;
-import java.util.Enumeration;
-import java.util.Locale;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
-import java.util.Vector;
+package net.sargue.time.jsptags;
 
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.jstl.core.Config;
 import javax.servlet.jsp.jstl.fmt.LocalizationContext;
-import javax.servlet.jsp.tagext.Tag;
+import java.text.DateFormat;
+import java.text.NumberFormat;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.*;
+
+import static java.time.format.FormatStyle.*;
 
 /**
  * <p>
@@ -38,6 +37,7 @@ import javax.servlet.jsp.tagext.Tag;
  * 
  * @author Jan Luehe
  * @author Jim Newsham
+ * @author Sergi Baila
  */
 public class Util {
 
@@ -128,10 +128,10 @@ public class Util {
      * language component or has an empty country component
      */
     public static Locale parseLocale(String locale, String variant) {
-        Locale ret = null;
+        Locale ret;
         String language = locale;
         String country = null;
-        int index = -1;
+        int index;
 
         if (((index = locale.indexOf(HYPHEN)) > -1)
                 || ((index = locale.indexOf(UNDERSCORE)) > -1)) {
@@ -139,7 +139,7 @@ public class Util {
             country = locale.substring(index + 1);
         }
 
-        if ((language == null) || (language.length() == 0)) {
+        if (language.isEmpty()) {
             throw new IllegalArgumentException(Resources
                     .getMessage("LOCALE_NO_LANGUAGE"));
         }
@@ -204,25 +204,14 @@ public class Util {
      * <tt>false</tt> otherwise (if set to <tt>true</tt>, the formatting
      * locale that is returned by this method is used to set the response
      * locale).
-     * 
+     *
      * @param avail the array of available locales
-     * 
+     *
      * @return the formatting locale to use
      */
-    static Locale getFormattingLocale(PageContext pc, Tag fromTag,
-            boolean format, Locale[] avail) {
+    static Locale getFormattingLocale(PageContext pc, boolean format, Locale[] avail) {
 
-        LocalizationContext locCtxt = null;
-
-        /*
-         * // Get formatting locale from enclosing <fmt:bundle> Tag parent =
-         * findAncestorWithClass(fromTag, BundleSupport.class); if (parent !=
-         * null) { /* use locale from localization context established by parent
-         * <fmt:bundle> action, unless that locale is null / locCtxt =
-         * ((BundleSupport) parent).getLocalizationContext(); if
-         * (locCtxt.getLocale() != null) { if (format) { setResponseLocale(pc,
-         * locCtxt.getLocale()); } return locCtxt.getLocale(); } }
-         */
+        LocalizationContext locCtxt;
 
         // Use locale from default I18N localization context, unless it is null
         if ((locCtxt = getLocalizationContext(pc)) != null) {
@@ -239,7 +228,7 @@ public class Util {
          * order of preference) against the available formatting locales, and
          * determining the best matching locale.
          */
-        Locale match = null;
+        Locale match;
         Locale pref = getLocale(pc, Config.FMT_LOCALE);
         if (pref != null) {
             // Preferred locale is application-based
@@ -269,60 +258,13 @@ public class Util {
     static Locale[] availableFormattingLocales;
     static {
         Locale[] dateLocales = DateFormat.getAvailableLocales();
-        Locale[] numberLocales = NumberFormat.getAvailableLocales();
-        Vector vec = new Vector(dateLocales.length);
-        for (int i = 0; i < dateLocales.length; i++) {
-            for (int j = 0; j < numberLocales.length; j++) {
-                if (dateLocales[i].equals(numberLocales[j])) {
-                    vec.add(dateLocales[i]);
-                    break;
-                }
-            }
-        }
-        availableFormattingLocales = new Locale[vec.size()];
-        availableFormattingLocales = (Locale[]) vec
-                .toArray(availableFormattingLocales);
-        /*
-         * for (int i=0; i<availableFormattingLocales.length; i++) {
-         * System.out.println("AvailableLocale[" + i + "] " +
-         * availableFormattingLocales[i]); }
-         */
-    }
-
-    /**
-     * Returns the formatting locale to use when <fmt:message> is used with a
-     * locale-less localization context.
-     * 
-     * @param pc The page context containing the formatting action @return the
-     * formatting locale to use
-     */
-    static Locale getFormattingLocale(PageContext pc) {
-        /*
-         * Establish formatting locale by comparing the preferred locales (in
-         * order of preference) against the available formatting locales, and
-         * determining the best matching locale.
-         */
-        Locale match = null;
-        Locale pref = getLocale(pc, Config.FMT_LOCALE);
-        if (pref != null) {
-            // Preferred locale is application-based
-            match = findFormattingMatch(pref, availableFormattingLocales);
-        } else {
-            // Preferred locales are browser-based
-            match = findFormattingMatch(pc, availableFormattingLocales);
-        }
-        if (match == null) {
-            // Use fallback locale.
-            pref = getLocale(pc, Config.FMT_FALLBACK_LOCALE);
-            if (pref != null) {
-                match = findFormattingMatch(pref, availableFormattingLocales);
-            }
-        }
-        if (match != null) {
-            setResponseLocale(pc, match);
-        }
-
-        return match;
+        Set<Locale> numberLocales = new HashSet<>(Arrays.asList(NumberFormat.getAvailableLocales()));
+        ArrayList<Locale> locales = new ArrayList<>();
+        for (Locale dateLocale : dateLocales)
+            if (numberLocales.contains(dateLocale))
+                locales.add(dateLocale);
+        availableFormattingLocales = new Locale[locales.size()];
+        availableFormattingLocales = locales.toArray(availableFormattingLocales);
     }
 
     /**
@@ -406,24 +348,24 @@ public class Util {
     private static Locale findFormattingMatch(Locale pref, Locale[] avail) {
         Locale match = null;
         boolean langAndCountryMatch = false;
-        for (int i = 0; i < avail.length; i++) {
-            if (pref.equals(avail[i])) {
+        for (Locale locale : avail) {
+            if (pref.equals(locale)) {
                 // Exact match
-                match = avail[i];
+                match = locale;
                 break;
             } else if (!"".equals(pref.getVariant())
-                    && "".equals(avail[i].getVariant())
-                    && pref.getLanguage().equals(avail[i].getLanguage())
-                    && pref.getCountry().equals(avail[i].getCountry())) {
+                       && "".equals(locale.getVariant())
+                       && pref.getLanguage().equals(locale.getLanguage())
+                       && pref.getCountry().equals(locale.getCountry())) {
                 // Language and country match; different variant
-                match = avail[i];
+                match = locale;
                 langAndCountryMatch = true;
             } else if (!langAndCountryMatch
-                    && pref.getLanguage().equals(avail[i].getLanguage())
-                    && ("".equals(avail[i].getCountry()))) {
+                       && pref.getLanguage().equals(locale.getLanguage())
+                       && ("".equals(locale.getCountry()))) {
                 // Language match
                 if (match == null) {
-                    match = avail[i];
+                    match = locale;
                 }
             }
         }
@@ -436,7 +378,7 @@ public class Util {
      * @param pc Page in which to look up the default I18N localization context
      */
     public static LocalizationContext getLocalizationContext(PageContext pc) {
-        LocalizationContext locCtxt = null;
+        LocalizationContext locCtxt;
 
         Object obj = Config.find(pc, Config.FMT_LOCALIZATION_CONTEXT);
         if (obj == null) {
@@ -481,7 +423,7 @@ public class Util {
     public static LocalizationContext getLocalizationContext(PageContext pc,
             String basename) {
         LocalizationContext locCtxt = null;
-        ResourceBundle bundle = null;
+        ResourceBundle bundle;
 
         if ((basename == null) || basename.equals("")) {
             return new LocalizationContext();
@@ -628,9 +570,76 @@ public class Util {
                 }
             }
         } catch (MissingResourceException mre) {
+            throw new IllegalStateException("Shouldn't happen?");
         }
 
         return match;
     }
 
+    /*
+    This section is based on joda-time DateTimeFormat to handle the two character style pattern missing in Java Time.
+     */
+
+    /**
+     * Select a format from a two character style pattern. The first character
+     * is the date style, and the second character is the time style. Specify a
+     * character of 'S' for short style, 'M' for medium, 'L' for long, and 'F'
+     * for full. A date or time may be ommitted by specifying a style character '-'.
+     *
+     * @param style  two characters from the set {"S", "M", "L", "F", "-"}
+     * @throws IllegalArgumentException if the style is invalid
+     */
+    static DateTimeFormatter createFormatterForStyle(String style) throws JspException {
+        if (style == null || style.length() != 2) {
+            throw new JspException("Invalid style specification: " + style);
+        }
+        FormatStyle dateStyle = selectStyle(style.charAt(0));
+        FormatStyle timeStyle = selectStyle(style.charAt(1));
+        if (dateStyle == null && timeStyle == null) {
+            throw new JspException("Style '--' is invalid");
+        }
+        return createFormatterForStyleIndex(dateStyle, timeStyle);
+    }
+
+    /**
+     * Gets the formatter for the specified style.
+     *
+     * @param dateStyle  the date style
+     * @param timeStyle  the time style
+     * @return the formatter
+     */
+    private static DateTimeFormatter createFormatterForStyleIndex(FormatStyle dateStyle, FormatStyle timeStyle)
+            throws JspException {
+        if (dateStyle == null && timeStyle == null)
+            throw new JspException("Both styles cannot be null.");
+        else if (dateStyle != null && timeStyle != null)
+            return DateTimeFormatter.ofLocalizedDateTime(dateStyle, timeStyle);
+        else if (dateStyle == null)
+            return DateTimeFormatter.ofLocalizedTime(timeStyle);
+        else
+            return DateTimeFormatter.ofLocalizedDate(dateStyle);
+    }
+
+    /**
+     * Gets the FormatStyle style code from first character.
+     *
+     * @param ch the one character style code
+     * @return the FormatStyle
+     */
+    private static FormatStyle selectStyle(char ch) throws JspException {
+        switch (ch) {
+            case 'S':
+                return SHORT;
+            case 'M':
+                return MEDIUM;
+            case 'L':
+                return LONG;
+            case 'F':
+                return FULL;
+            case '-':
+                return null;
+            default:
+                throw new JspException("Invalid style character: " + ch);
+        }
+    }
 }
