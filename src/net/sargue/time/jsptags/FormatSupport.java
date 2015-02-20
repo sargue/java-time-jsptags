@@ -117,9 +117,7 @@ public abstract class FormatSupport extends TagSupport {
         if (tz == null) {
             tz = ZoneIdSupport.getZoneId(pageContext, this);
         }
-        if (tz != null) {
-            formatter = formatter.withZone(tz);
-        }
+        formatter = formatter.withZone(tz == null ? ZoneId.systemDefault() : tz);
 
         // format value
         String formatted;
