@@ -7,7 +7,7 @@
     
   <description>Java Time Tag Library</description>
   <display-name>Java Time</display-name>
-  <tlib-version>0.1</tlib-version>
+  <tlib-version>1.0</tlib-version>
   <short-name>javatime</short-name>
   <uri>http://sargue.net/jsptags/time</uri>
 
@@ -16,7 +16,7 @@
         Provides core validation features for JSTL tags.
     </description>
     <validator-class>
-        net.sargue.time.jsptags.JodaTagLibraryValidator
+        net.sargue.time.jsptags.JavaTimeTagLibraryValidator
     </validator-class>
   </validator>
 
@@ -84,14 +84,14 @@ variable.
 
   <tag>
     <description>
-        Formats a Joda instant or partial using the supplied style or pattern
+        Formats a Temporal using the supplied style or pattern
     </description>
     <name>format</name>
     <tag-class>net.sargue.time.jsptags.FormatTag</tag-class>
     <body-content>empty</body-content>
     <attribute>
         <description>
-ReadableInstant or ReadablePartial to be formatted.
+Temporal to be formatted.
         </description>
         <name>value</name>
         <required>true</required>
@@ -99,8 +99,7 @@ ReadableInstant or ReadablePartial to be formatted.
     </attribute>
     <attribute>
         <description>
-Formatting style to apply.  See 
-org.joda.time.format.DateTimeFormat#forStyle()
+Formatting style to apply.  See java.time.format.FormatStyle
 for more information on supported styles.
         </description>
         <name>style</name>
@@ -109,8 +108,8 @@ for more information on supported styles.
     </attribute>
     <attribute>
         <description>
-Formatting pattern to apply.  See 
-org.joda.time.format.DateTimeFormat#forPattern()
+Formatting pattern to apply.  See
+java.time.format.DateTimeFormatter
 for more information on supported patterns.
         </description>
         <name>pattern</name>
@@ -159,8 +158,8 @@ formatting.
     <description>
         Parses the string representation of a date/time
     </description>
-    <name>parseDateTime</name>
-    <tag-class>net.sargue.time.jsptags.ParseDateTimeTag</tag-class>
+    <name>parseInstant</name>
+    <tag-class>net.sargue.time.jsptags.ParseInstantTag</tag-class>
     <body-content>JSP</body-content>
     <attribute>
         <description>
@@ -172,8 +171,8 @@ Date/time to be parsed.
     </attribute>
     <attribute>
         <description>
-Formatting style to use.  See 
-org.joda.time.format.DateTimeFormat#forStyle()
+Formatting style to use.  See
+java.time.format.FormatStyle
 for more information on supported styles.
         </description>
         <name>style</name>
@@ -182,8 +181,8 @@ for more information on supported styles.
     </attribute>
     <attribute>
         <description>
-Formatting pattern to use.  See 
-org.joda.time.format.DateTimeFormat#forPattern()
+Formatting pattern to use.  See
+java.time.format.DateTimeFormatter
 for more information on supported patterns.
         </description>
         <name>pattern</name>
@@ -194,7 +193,7 @@ for more information on supported patterns.
         <description>
 Time zone in which to parse the date/time.
         </description>
-        <name>dateTimeZone</name>
+        <name>zoneId</name>
         <required>false</required>
         <rtexprvalue>true</rtexprvalue>
     </attribute>
@@ -212,7 +211,7 @@ parse.
         <description>
 Name of the exported scoped variable in
 which the parsing result (of type
-org.joda.time.DateTime) is stored.
+java.time.Instant) is stored.
         </description>
         <name>var</name>
         <required>false</required>

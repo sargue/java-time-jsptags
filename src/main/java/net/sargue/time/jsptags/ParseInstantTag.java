@@ -32,7 +32,7 @@ import java.util.Locale;
  */
 
 @SuppressWarnings("UnusedDeclaration")
-public class ParseDateTimeTag extends ParseDateTimeSupport {
+public class ParseInstantTag extends ParseInstantSupport {
 
     /**
      * Sets the value attribute.

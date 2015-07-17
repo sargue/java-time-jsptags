@@ -1,0 +1,34 @@
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+version = '1.0.0'
+
+compileJava.options.encoding = 'UTF-8'
+compileTestJava.options.encoding = 'UTF-8'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'javax.servlet:javax.servlet-api:3.0.1'
+    compile 'javax.servlet.jsp:javax.servlet.jsp-api:2.2.1'
+    compile 'javax.servlet.jsp.jstl:javax.servlet.jsp.jstl-api:1.2.1'
+    testCompile 'junit:junit:4.+'
+    testCompile 'org.springframework:spring-test:4.1.7.RELEASE'
+}
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'Java 8 java.time JSP tags',
+                   'Implementation-Version': version
+    }
+}
+
+uploadArchives {
+    repositories {
+        flatDir {
+            dirs 'dist'
+        }
+    }
+}

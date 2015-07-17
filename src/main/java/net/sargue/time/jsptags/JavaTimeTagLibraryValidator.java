@@ -27,11 +27,11 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.IOException;
-import java.util.Vector;
+import java.util.*;
 
 /**
  * <p>
- * A SAX-based TagLibraryValidator for the Joda tags. Currently implements the
+ * A SAX-based TagLibraryValidator for the java.time tags. Currently implements the
  * following checks:
  * </p>
  * 
@@ -48,7 +48,7 @@ import java.util.Vector;
  * @author Jim Newsham
  * @author Sergi Baila
  */
-public class JodaTagLibraryValidator extends TagLibraryValidator {
+public class JavaTimeTagLibraryValidator extends TagLibraryValidator {
 
     /*
      * Expression syntax validation has been disabled since when I ported this
@@ -84,7 +84,7 @@ public class JodaTagLibraryValidator extends TagLibraryValidator {
     // tag names
     private static final String SET_ZONEID = "setZoneId";
 
-    private static final String PARSE_DATETIME = "parseDateTime";
+    private static final String PARSE_INSTANT = "parseInstant";
 
     private static final String JSP_TEXT = "jsp:text";
 
@@ -116,7 +116,7 @@ public class JodaTagLibraryValidator extends TagLibraryValidator {
 
     private String prefix; // our taglib's prefix
 
-    private Vector messageVector; // temporary error messages
+    private List<ValidationMessage> validationMessages; // temporary error messages
 
 //    private Map config; // configuration (Map of Sets)
 //
@@ -127,12 +127,12 @@ public class JodaTagLibraryValidator extends TagLibraryValidator {
     // *********************************************************************
     // Constructor and lifecycle management
 
-    public JodaTagLibraryValidator() {
+    public JavaTimeTagLibraryValidator() {
         init();
     }
 
     private void init() {
-        messageVector = null;
+        validationMessages = null;
         prefix = null;
 //        config = null;
     }
@@ -147,7 +147,7 @@ public class JodaTagLibraryValidator extends TagLibraryValidator {
         try {
             this.uri = uri;
             // initialize
-            messageVector = new Vector();
+            validationMessages = new ArrayList<>();
 
             // save the prefix
             this.prefix = prefix;
@@ -161,10 +161,10 @@ public class JodaTagLibraryValidator extends TagLibraryValidator {
             SAXParser p = f.newSAXParser();
             p.parse(page.getInputStream(), h);
 
-            if (messageVector.size() == 0) {
+            if (validationMessages.size() == 0) {
                 return null;
             } else {
-                return vmFromVector(messageVector);
+                return validationMessages.toArray(new ValidationMessage[validationMessages.size()]);
             }
         } catch (SAXException ex) {
             return vmFromString(ex.toString());
@@ -195,7 +195,7 @@ public class JodaTagLibraryValidator extends TagLibraryValidator {
 //        return isTag(tagUri, tagLn, JSP, target);
 //    }
 
-    private boolean isJodaTag(String tagUri, String tagLn, String target) {
+    private boolean isJavaTimeTag(String tagUri, String tagLn, String target) {
         return isTag(tagUri, tagLn, this.uri, target);
     }
 
@@ -209,8 +209,7 @@ public class JodaTagLibraryValidator extends TagLibraryValidator {
      */
     private void fail(String message) {
 //        failed = true;
-        //noinspection unchecked
-        messageVector.add(new ValidationMessage(lastElementId, message));
+        validationMessages.add(new ValidationMessage(lastElementId, message));
     }
 
 //    // returns true if the given attribute name is specified, false otherwise
@@ -245,15 +244,6 @@ public class JodaTagLibraryValidator extends TagLibraryValidator {
     // constructs a ValidationMessage[] from a single String and no ID
     private static ValidationMessage[] vmFromString(String message) {
         return new ValidationMessage[] { new ValidationMessage(null, message) };
-    }
-
-    // constructs a ValidationMessage[] from a ValidationMessage Vector
-    private static ValidationMessage[] vmFromVector(Vector v) {
-        ValidationMessage[] vm = new ValidationMessage[v.size()];
-        for (int i = 0; i < vm.length; i++) {
-            vm[i] = (ValidationMessage) v.get(i);
-        }
-        return vm;
     }
 
     /**
@@ -294,7 +284,7 @@ public class JodaTagLibraryValidator extends TagLibraryValidator {
                 fail(Resources.getMessage("TLV_EMPTY_VAR", qn));
             }
             if (qn.startsWith(prefix + ":")
-                    && !isJodaTag(ns, ln, SET_ZONEID)
+                    && !isJavaTimeTag(ns, ln, SET_ZONEID)
                     && hasDanglingScope(a)) {
                 fail(Resources.getMessage("TLV_DANGLING_SCOPE", qn));
             }
@@ -304,7 +294,7 @@ public class JodaTagLibraryValidator extends TagLibraryValidator {
             // set up a check against illegal attribute/body combinations
             bodyIllegal = false;
             bodyNecessary = false;
-            if (isJodaTag(ns, ln, PARSE_DATETIME)) {
+            if (isJavaTimeTag(ns, ln, PARSE_INSTANT)) {
                 if (hasAttribute(a, VALUE)) {
                     bodyIllegal = true;
                 } else {

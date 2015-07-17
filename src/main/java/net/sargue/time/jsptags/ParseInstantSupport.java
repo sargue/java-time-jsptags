@@ -22,7 +22,7 @@ import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 import java.io.IOException;
 import java.text.DateFormat;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
@@ -35,7 +35,7 @@ import java.util.Locale;
  * @author Jim Newsham
  * @author Sergi Baila
  */
-public abstract class ParseDateTimeSupport extends BodyTagSupport {
+public abstract class ParseInstantSupport extends BodyTagSupport {
 
     /** The value attribute. */
     protected String value;
@@ -57,7 +57,7 @@ public abstract class ParseDateTimeSupport extends BodyTagSupport {
     /**
      * Constructor.
      */
-    public ParseDateTimeSupport() {
+    public ParseInstantSupport() {
         super();
         init();
     }
@@ -133,9 +133,9 @@ public abstract class ParseDateTimeSupport extends BodyTagSupport {
         }
 
         // Parse date
-        LocalDateTime parsed;
+        Instant parsed;
         try {
-            parsed = formatter.parse(input, LocalDateTime::from);
+            parsed = formatter.parse(input, Instant::from);
         } catch (IllegalArgumentException iae) {
             throw new JspException(Resources.getMessage(
                     "PARSE_DATE_PARSE_ERROR", input), iae);
