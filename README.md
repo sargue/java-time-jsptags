@@ -28,6 +28,23 @@ almost exactly as the tags in the original Joda-Time JSP Tags.
 
 ### Usage
 
+Add the dependency to your project:
+
+#### Gradle
+`compile 'net.sargue:java-time-jsptags:1.0.0'`
+
+#### Maven
+
+```xml
+<dependency>
+    <groupId>net.sargue</groupId>
+    <artifactId>java-time-jsptags</artifactId>
+    <version>1.0.0</version>
+</dependency>
+```
+
+#### Tag library declaration
+
 Declare the library as follows in your jsp pages:
 
 ```

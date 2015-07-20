@@ -19,7 +19,7 @@ package net.sargue.time.jsptags;
 import javax.servlet.jsp.JspTagException;
 
 /**
- * A handler for &lt;zoneId&gt.
+ * A handler for &lt;zoneId&gt;.
  * 
  * @author Jan Luehe
  * @author Jim Newsham

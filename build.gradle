@@ -1,8 +1,12 @@
 apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'signing'
 
-sourceCompatibility = 1.8
+group = 'net.sargue'
+archivesBaseName = 'java-time-jsptags'
 version = '1.0.0'
 
+sourceCompatibility = 1.8
 compileJava.options.encoding = 'UTF-8'
 compileTestJava.options.encoding = 'UTF-8'
 
@@ -14,7 +18,7 @@ dependencies {
     compile 'javax.servlet:javax.servlet-api:3.0.1'
     compile 'javax.servlet.jsp:javax.servlet.jsp-api:2.2.1'
     compile 'javax.servlet.jsp.jstl:javax.servlet.jsp.jstl-api:1.2.1'
-    testCompile 'junit:junit:4.+'
+    testCompile 'junit:junit:4.12'
     testCompile 'org.springframework:spring-test:4.1.7.RELEASE'
 }
 
@@ -25,10 +29,64 @@ jar {
     }
 }
 
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+signing {
+    sign configurations.archives
+}
+
 uploadArchives {
     repositories {
-        flatDir {
-            dirs 'dist'
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: NEXUS_USERNAME, password: NEXUS_PASSWORD)
+            }
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: NEXUS_USERNAME, password: NEXUS_PASSWORD)
+            }
+
+            pom.project {
+                name name
+                packaging 'jar'
+                description 'JSP tag support for Java 8 java.time (JSR-310)'
+                url 'https://github.com/sargue/java-time-jsptags'
+
+                scm {
+                    connection 'scm:git:git@github.com:sargue/java-time-jsptags.git'
+                    developerConnection 'scm:git:git@github.com:sargue/java-time-jsptags.git'
+                    url 'git@github.com:sargue/java-time-jsptags.git'
+                }
+
+                licenses {
+                    license {
+                        name 'The Apache License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'sargue'
+                        name 'Sergi Baila'
+                        email 'sargue@gmail.com'
+                    }
+                }
+            }
         }
     }
 }
