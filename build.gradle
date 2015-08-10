@@ -6,6 +6,9 @@ group = 'net.sargue'
 archivesBaseName = 'java-time-jsptags'
 version = '1.0.0'
 
+def NEXUS_USERNAME = hasProperty('NEXUS_USERNAME') ? NEXUS_USERNAME : ''
+def NEXUS_PASSWORD = hasProperty('NEXUS_PASSWORD') ? NEXUS_PASSWORD : ''
+
 sourceCompatibility = 1.8
 compileJava.options.encoding = 'UTF-8'
 compileTestJava.options.encoding = 'UTF-8'
