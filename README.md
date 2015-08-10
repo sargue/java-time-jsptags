@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/sargue/java-time-jsptags.svg?branch=master)](https://travis-ci.org/sargue/java-time-jsptags)
+
 ## Java 8 java.time JSP tags
 
 This project provides JSP tags for the new java.time package present in Java 8.
