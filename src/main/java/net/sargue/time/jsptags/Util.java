@@ -1,6 +1,6 @@
 /*
  * Copyright 1999-2004 The Apache Software Foundation.
- * Modifications, Copyright 2005 Stephen Colebourne, 2014 Sergi Baila
+ * Modifications, Copyright 2005 Stephen Colebourne, 2014-2015 Sergi Baila
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -86,6 +86,10 @@ public class Util {
      * therefore need to return an empty Enumeration if no preferred locale has
      * been specified. This way, the logic for the fallback locale will be able
      * to kick in.
+     *
+     * @param request the http request
+     * @return the locales from the request or an empty enumeration if no
+     * preferred locale has been specified
      */
     public static Enumeration getRequestLocales(HttpServletRequest request) {
         Enumeration values = request.getHeaders("accept-language");
@@ -104,6 +108,10 @@ public class Util {
 
     /**
      * See parseLocale(String, String) for details.
+     *
+     * @param locale the locale string to parse
+     * @return <tt>java.util.Locale</tt> object corresponding to the given
+     * locale string, or the null if the locale string is null or empty
      */
     public static Locale parseLocale(String locale) {
         return parseLocale(locale, null);
@@ -114,15 +122,13 @@ public class Util {
      * components, and returns the corresponding <tt>java.util.Locale</tt>
      * object.
      * 
-     * If the given locale string is null or empty, the runtime's default locale
-     * is returned.
+     * If the given locale string is null or empty, a null value is returned.
      * 
      * @param locale the locale string to parse
      * @param variant the variant
      * 
      * @return <tt>java.util.Locale</tt> object corresponding to the given
-     * locale string, or the runtime's default locale if the locale string is
-     * null or empty
+     * locale string, or the null if the locale string is null or empty
      * 
      * @throws IllegalArgumentException if the given locale does not have a
      * language component or has an empty country component
@@ -132,6 +138,9 @@ public class Util {
         String language = locale;
         String country = null;
         int index;
+
+        if (locale == null || locale.isEmpty())
+            return null;
 
         if (((index = locale.indexOf(HYPHEN)) > -1)
                 || ((index = locale.indexOf(UNDERSCORE)) > -1)) {
@@ -376,6 +385,7 @@ public class Util {
      * Gets the default I18N localization context.
      * 
      * @param pc Page in which to look up the default I18N localization context
+     * @return the localization context
      */
     public static LocalizationContext getLocalizationContext(PageContext pc) {
         LocalizationContext locCtxt;

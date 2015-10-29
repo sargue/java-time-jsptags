@@ -156,15 +156,14 @@ formatting.
 
   <tag>
     <description>
-        Parses the string representation of a date/time
+        Parses the string representation of an date, time and zone into a
+        java.time.Instant
     </description>
     <name>parseInstant</name>
     <tag-class>net.sargue.time.jsptags.ParseInstantTag</tag-class>
     <body-content>JSP</body-content>
     <attribute>
-        <description>
-Date/time to be parsed.
-        </description>
+        <description>Instant to be parsed.</description>
         <name>value</name>
         <required>true</required>
         <rtexprvalue>true</rtexprvalue>
@@ -191,7 +190,7 @@ for more information on supported patterns.
     </attribute>
     <attribute>
         <description>
-Time zone in which to parse the date/time.
+Time zone in which to parse the Instant.
         </description>
         <name>zoneId</name>
         <required>false</required>
@@ -227,4 +226,216 @@ Scope of var.
     </attribute>
   </tag>
 
+  <tag>
+    <description>
+        Parses the string representation of an date into a java.time.LocalDate
+    </description>
+    <name>parseLocalDate</name>
+    <tag-class>net.sargue.time.jsptags.ParseLocalDateTag</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+        <description>LocalDate to be parsed.</description>
+        <name>value</name>
+        <required>true</required>
+        <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+        <description>
+Formatting style to use.  See
+java.time.format.FormatStyle
+for more information on supported styles.
+        </description>
+        <name>style</name>
+        <required>false</required>
+        <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+        <description>
+Formatting pattern to use.  See
+java.time.format.DateTimeFormatter
+for more information on supported patterns.
+        </description>
+        <name>pattern</name>
+        <required>false</required>
+        <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+        <description>
+Time zone in which to parse the LocalDate.
+        </description>
+        <name>zoneId</name>
+        <required>false</required>
+        <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+        <description>
+Locale whose predefined formatting styles
+for dates and times are to be used to
+parse.
+        </description>
+        <name>locale</name>
+        <required>false</required>
+        <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+        <description>
+Name of the exported scoped variable in
+which the parsing result (of type
+java.time.LocalDate) is stored.
+        </description>
+        <name>var</name>
+        <required>false</required>
+        <rtexprvalue>false</rtexprvalue>
+    </attribute>
+    <attribute>
+        <description>
+Scope of var.
+        </description>
+        <name>scope</name>
+        <required>false</required>
+        <rtexprvalue>false</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <tag>
+    <description>
+        Parses the string representation of an date into a java.time.LocalTime
+    </description>
+    <name>parseLocalTime</name>
+    <tag-class>net.sargue.time.jsptags.ParseLocalTimeTag</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+        <description>LocalTime to be parsed.</description>
+        <name>value</name>
+        <required>true</required>
+        <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+        <description>
+Formatting style to use.  See
+java.time.format.FormatStyle
+for more information on supported styles.
+        </description>
+        <name>style</name>
+        <required>false</required>
+        <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+        <description>
+Formatting pattern to use.  See
+java.time.format.DateTimeFormatter
+for more information on supported patterns.
+        </description>
+        <name>pattern</name>
+        <required>false</required>
+        <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+        <description>
+Time zone in which to parse the LocalTime.
+        </description>
+        <name>zoneId</name>
+        <required>false</required>
+        <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+        <description>
+Locale whose predefined formatting styles
+for dates and times are to be used to
+parse.
+        </description>
+        <name>locale</name>
+        <required>false</required>
+        <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+        <description>
+Name of the exported scoped variable in
+which the parsing result (of type
+java.time.LocalTime) is stored.
+        </description>
+        <name>var</name>
+        <required>false</required>
+        <rtexprvalue>false</rtexprvalue>
+    </attribute>
+    <attribute>
+        <description>
+Scope of var.
+        </description>
+        <name>scope</name>
+        <required>false</required>
+        <rtexprvalue>false</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <tag>
+    <description>
+        Parses the string representation of an date into a java.time.LocalDateTime
+    </description>
+    <name>parseLocalDateTime</name>
+    <tag-class>net.sargue.time.jsptags.ParseLocalDateTimeTag</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+        <description>LocalDateTime to be parsed.</description>
+        <name>value</name>
+        <required>true</required>
+        <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+        <description>
+Formatting style to use.  See
+java.time.format.FormatStyle
+for more information on supported styles.
+        </description>
+        <name>style</name>
+        <required>false</required>
+        <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+        <description>
+Formatting pattern to use.  See
+java.time.format.DateTimeFormatter
+for more information on supported patterns.
+        </description>
+        <name>pattern</name>
+        <required>false</required>
+        <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+        <description>
+Time zone in which to parse the LocalDateTime.
+        </description>
+        <name>zoneId</name>
+        <required>false</required>
+        <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+        <description>
+Locale whose predefined formatting styles
+for dates and times are to be used to
+parse.
+        </description>
+        <name>locale</name>
+        <required>false</required>
+        <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+        <description>
+Name of the exported scoped variable in
+which the parsing result (of type
+java.time.LocalDateTime) is stored.
+        </description>
+        <name>var</name>
+        <required>false</required>
+        <rtexprvalue>false</rtexprvalue>
+    </attribute>
+    <attribute>
+        <description>
+Scope of var.
+        </description>
+        <name>scope</name>
+        <required>false</required>
+        <rtexprvalue>false</rtexprvalue>
+    </attribute>
+  </tag>
 </taglib>

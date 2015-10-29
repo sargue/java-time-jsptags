@@ -33,7 +33,7 @@ almost exactly as the tags in the original Joda-Time JSP Tags.
 Add the dependency to your project:
 
 #### Gradle
-`compile 'net.sargue:java-time-jsptags:1.0.0'`
+`compile 'net.sargue:java-time-jsptags:1.1.0'`
 
 #### Maven
 
@@ -41,7 +41,7 @@ Add the dependency to your project:
 <dependency>
     <groupId>net.sargue</groupId>
     <artifactId>java-time-jsptags</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
@@ -55,7 +55,7 @@ Declare the library as follows in your jsp pages:
 
 #### Tags
 
-##### FORMAT
+##### &lt;javatime:format&gt;
 
 Example:
 ```
@@ -65,7 +65,8 @@ Example:
 Formats any `java.util.Temporal` like `Instant`, `LocalDateTime`, `LocalDate`, `LocalTime`, etc.
 The `var` and `scope` attributes can be used to set the value of a variable instead of printing the result.
 The time zone may be specified using an attribute, an enclosing `<javatime:zoneId/>` tag,
-preceding `<javatime:setZoneId/>` tag, or via the `net.sargue.time.zoneId` scoped variable.
+preceding `<javatime:setZoneId/>` tag, or via the `net.sargue.time.zoneId` scoped variable. If the
+time zone is not specified it will default to the **system default time-zone**.
 
 Attributes:
 
@@ -77,16 +78,16 @@ Attributes:
 | locale           | The locale to use for formatting.                                                                     |
 | style            | The style to use for formatting (see java.time format documentation for recognized style strings)     |
 | pattern          | The pattern to use for formatting (see java.time format documentation for recognized pattern strings) |
-| zoneId           | The time zone to use for formatting.                                                                  |
+| zoneId           | The time zone to use for formatting. See comment above for fallback and defaults.                     |
 
-##### PARSEINSTANT
+##### &lt;javatime:parseInstant&gt;
 
 Example:
 ```
 <javatime:parseInstant value="${dt}" style="MS" />
 ```
 
-Parses a string into an `Instant` object.
+Parses a string into an `java.time.Instant` object.
 The `var` and `scope` attributes can be used to set the value of a variable instead of printing the result.
 The time zone may be specified using an attribute, an enclosing `<javatime:zoneId/>` tag,
 preceding `<javatime:setZoneId/>` tag, or via the `net.sargue.time.zoneId` scoped variable.
@@ -95,15 +96,87 @@ Attributes:
 
 | Attribute | Description                                                                                                                                   |
 |:----------|:----------------------------------------------------------------------------------------------------------------------------------------------|
-| value     | Required unless value is nested within tag. Must be a string which can be parsed into a `Instant` according to the parsing options specified. |
+| value     | Required unless value is nested within tag. Must be a string which can be parsed into a `java.time.Instant` according to the parsing options specified. |
 | var       | The scoped variable to set.                                                                                                                   |
 | scope     | The scope of the variable to set.                                                                                                             |
 | locale    | The locale to use for parsing.                                                                                                                |
 | style     | The style to use for parsing (see java.time format documentation for recognized style strings)                                                |
 | pattern   | The pattern to use for parsing (see java.time format documentation for recognized pattern strings)                                            |
-| zoneId    | The time zone to use for parsing.                                                                                                             |
+| zoneId    | The time zone to use for parsing. See comment above for fallback and defaults.                                                                |
 
-##### ZONEID
+##### &lt;javatime:parseLocalDateTime&gt;
+
+Example:
+```
+<javatime:parseLocalDateTime value="${dt}" style="MS" />
+```
+
+Parses a string into an `java.time.LocalDateTime` object.
+The `var` and `scope` attributes can be used to set the value of a variable instead of printing the result.
+The time zone may be specified using an attribute, an enclosing `<javatime:zoneId/>` tag,
+preceding `<javatime:setZoneId/>` tag, or via the `net.sargue.time.zoneId` scoped variable.
+
+Attributes:
+
+| Attribute | Description                                                                                                                                   |
+|:----------|:----------------------------------------------------------------------------------------------------------------------------------------------|
+| value     | Required unless value is nested within tag. Must be a string which can be parsed into a `java.time.LocalDateTime` according to the parsing options specified. |
+| var       | The scoped variable to set.                                                                                                                   |
+| scope     | The scope of the variable to set.                                                                                                             |
+| locale    | The locale to use for parsing.                                                                                                                |
+| style     | The style to use for parsing (see java.time format documentation for recognized style strings)                                                |
+| pattern   | The pattern to use for parsing (see java.time format documentation for recognized pattern strings)                                            |
+| zoneId    | The time zone to use for parsing. See comment above for fallback and defaults.                                                                |
+
+##### &lt;javatime:parseLocalDate&gt;
+
+Example:
+```
+<javatime:parseLocalDate value="28/10/2015" pattern="dd/MM/yyyy" />
+```
+
+Parses a string into an `java.time.LocalDate` object.
+The `var` and `scope` attributes can be used to set the value of a variable instead of printing the result.
+The time zone may be specified using an attribute, an enclosing `<javatime:zoneId/>` tag,
+preceding `<javatime:setZoneId/>` tag, or via the `net.sargue.time.zoneId` scoped variable.
+
+Attributes:
+
+| Attribute | Description                                                                                                                                   |
+|:----------|:----------------------------------------------------------------------------------------------------------------------------------------------|
+| value     | Required unless value is nested within tag. Must be a string which can be parsed into a `java.time.LocalDate` according to the parsing options specified. |
+| var       | The scoped variable to set.                                                                                                                   |
+| scope     | The scope of the variable to set.                                                                                                             |
+| locale    | The locale to use for parsing.                                                                                                                |
+| style     | The style to use for parsing (see java.time format documentation for recognized style strings)                                                |
+| pattern   | The pattern to use for parsing (see java.time format documentation for recognized pattern strings)                                            |
+| zoneId    | The time zone to use for parsing. See comment above for fallback and defaults.                                                                |
+
+##### &lt;javatime:parseLocalTime&gt;
+
+Example:
+```
+<javatime:parseLocalTime value="10:43" pattern="HH:mm" />
+```
+
+Parses a string into an `java.time.LocalTime` object.
+The `var` and `scope` attributes can be used to set the value of a variable instead of printing the result.
+The time zone may be specified using an attribute, an enclosing `<javatime:zoneId/>` tag,
+preceding `<javatime:setZoneId/>` tag, or via the `net.sargue.time.zoneId` scoped variable.
+
+Attributes:
+
+| Attribute | Description                                                                                                                                   |
+|:----------|:----------------------------------------------------------------------------------------------------------------------------------------------|
+| value     | Required unless value is nested within tag. Must be a string which can be parsed into a `java.time.LocalTime` according to the parsing options specified. |
+| var       | The scoped variable to set.                                                                                                                   |
+| scope     | The scope of the variable to set.                                                                                                             |
+| locale    | The locale to use for parsing.                                                                                                                |
+| style     | The style to use for parsing (see java.time format documentation for recognized style strings)                                                |
+| pattern   | The pattern to use for parsing (see java.time format documentation for recognized pattern strings)                                            |
+| zoneId    | The time zone to use for parsing. See comment above for fallback and defaults.                                                                |
+
+##### &lt;javatime:zoneId&gt;
 
 Example:
 ```
@@ -119,7 +192,7 @@ The `<javatime:format/>` tag may override this value with an explicit `zoneId` a
 |:-----------------|:----------------------------------------------|
 | value (required) | The default time zone for nested tags to use. |
 
-##### SETZONEID
+##### &lt;javatime:setZoneId&gt;
 
 Example:
 ```
@@ -142,6 +215,9 @@ a `zoneId` attribute and is not nested within a `<javatime:zoneId/>` tag.
 Build is based on gradle. See build.gradle included in the repository.
 
 ### Changelog
+
+##### v1.1.0
+Fixed issue #1, added more parse tags.
 
 ##### v1.0.0
 Some tests added. Minor refactorings and no functionality changed.

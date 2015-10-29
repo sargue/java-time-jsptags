@@ -1,6 +1,6 @@
 /*
  * Copyright 1999-2004 The Apache Software Foundation.
- * Modifications, Copyright 2005 Stephen Colebourne, 2014 Sergi Baila
+ * Modifications, Copyright 2005 Stephen Colebourne, 2014-2015 Sergi Baila
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +16,13 @@
  */
 package net.sargue.time.jsptags;
 
-import javax.servlet.jsp.JspTagException;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.util.Locale;
+import java.time.Instant;
+import java.time.temporal.TemporalAccessor;
+import java.time.temporal.TemporalQuery;
 
 /**
  * <p>
- * A handler for &lt;parseDate&gt; that supports rtexprvalue-based attributes.
+ * A handler for &lt;parseInstant&gt; that supports rtexprvalue-based attributes.
  * </p>
  * 
  * @author Jan Luehe
@@ -31,73 +30,9 @@ import java.util.Locale;
  * @author Sergi Baila
  */
 
-@SuppressWarnings("UnusedDeclaration")
-public class ParseInstantTag extends ParseInstantSupport {
-
-    /**
-     * Sets the value attribute.
-     * 
-     * @param value  the value
-     */
-    public void setValue(String value) throws JspTagException {
-        this.value = value;
-        this.valueSpecified = true;
+public class ParseInstantTag extends ParseSupport {
+    @Override
+    protected TemporalQuery<TemporalAccessor> temporalQuery() {
+        return Instant::from;
     }
-
-    /**
-     * Sets the style attribute.
-     * 
-     * @param style  the style
-     */
-    public void setStyle(String style) throws JspTagException {
-        this.style = style;
-    }
-
-    /**
-     * Sets the pattern attribute.
-     * 
-     * @param pattern  the pattern
-     */
-    public void setPattern(String pattern) throws JspTagException {
-        this.pattern = pattern;
-    }
-
-    /**
-     * Sets the zone attribute.
-     * 
-     * @param dtz  the zone
-     */
-    public void setZoneId(Object dtz) throws JspTagException {
-        if (dtz == null || dtz instanceof String
-                && ((String) dtz).length() == 0) {
-            this.zoneId = null;
-        } else if (dtz instanceof ZoneId) {
-            this.zoneId = (ZoneId) dtz;
-        } else if (dtz instanceof String) {
-            try {
-                this.zoneId = ZoneId.of((String) dtz);
-            } catch (IllegalArgumentException iae) {
-                this.zoneId = ZoneOffset.UTC;
-            }
-        } else
-            throw new JspTagException("Can only accept ZoneId or String objects.");
-    }
-
-    /**
-     * Sets the style attribute.
-     * 
-     * @param loc  the locale
-     */
-    public void setLocale(Object loc) throws JspTagException {
-        if (loc == null
-                || (loc instanceof String && ((String) loc).length() == 0)) {
-            this.locale = null;
-        } else if (loc instanceof Locale) {
-            this.locale = (Locale) loc;
-        } else if (loc instanceof String) {
-            locale = Util.parseLocale((String) loc);
-        } else
-            throw new JspTagException("Can only accept Locale or String objects.");
-    }
-
 }

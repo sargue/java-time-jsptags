@@ -1,6 +1,6 @@
 /*
  * Copyright 1999-2004 The Apache Software Foundation.
- * Modifications, Copyright 2005 Stephen Colebourne
+ * Modifications, Copyright 2005 Stephen Colebourne, 2014-2015 Sergi Baila
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,26 +16,24 @@
  */
 package net.sargue.time.jsptags;
 
-import javax.servlet.jsp.JspTagException;
+import java.time.LocalDate;
+import java.time.temporal.TemporalAccessor;
+import java.time.temporal.TemporalQuery;
 
 /**
  * <p>
- * A handler for &lt;setDateTimeZone&gt; that supports rtexprvalue-based
+ * A handler for &lt;parseLocalDate&gt; that supports rtexprvalue-based
  * attributes.
  * </p>
  * 
  * @author Jan Luehe
  * @author Jim Newsham
+ * @author Sergi Baila
  */
-public class SetZoneIdIdTag extends SetZoneIdSupport {
 
-    /**
-     * Sets the value attribute.
-     * 
-     * @param value  the value
-     */
-    public void setValue(Object value) {
-        this.value = value;
+public class ParseLocalDateTag extends ParseSupport {
+    @Override
+    protected TemporalQuery<TemporalAccessor> temporalQuery() {
+        return LocalDate::from;
     }
-
 }

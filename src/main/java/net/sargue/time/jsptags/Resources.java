@@ -55,32 +55,69 @@ public class Resources {
     //*********************************************************************
     // Public static methods
 
-    /** Retrieves a message with no arguments. */
+    /**
+     * Retrieves a message with no arguments.  
+     * 
+     * @param name the resource name
+     * @return the message
+     * @throws MissingResourceException the missing resource exception
+     */
     public static String getMessage(String name)
       throws MissingResourceException {
         return rb.getString(name);
     }
 
-    /** Retrieves a message with arbitrarily many arguments. */
+    /**
+     * Retrieves a message with arbitrarily many arguments.  
+     * 
+     * @param name the resource name
+     * @param a the a
+     * @return the message
+     * @throws MissingResourceException the missing resource exception
+     */
     public static String getMessage(String name, Object[] a)
       throws MissingResourceException {
         String res = rb.getString(name);
         return MessageFormat.format(res, a);
     }
 
-    /** Retrieves a message with one argument. */
+    /**
+     * Retrieves a message with one argument.  
+     * 
+     * @param name the resource name
+     * @param a1 the parameter number 1
+     * @return the message
+     * @throws MissingResourceException the missing resource exception
+     */
     public static String getMessage(String name, Object a1)
       throws MissingResourceException {
         return getMessage(name, new Object[] { a1 });
     }
 
-    /** Retrieves a message with two arguments. */
+    /**
+     * Retrieves a message with two arguments.
+     *
+     * @param name the resource name
+     * @param a1 the parameter number 1
+     * @param a2 the parameter number 2
+     * @return the message
+     * @throws MissingResourceException the missing resource exception
+     */
     public static String getMessage(String name, Object a1, Object a2)
       throws MissingResourceException {
         return getMessage(name, new Object[] { a1, a2 });
     }
 
-    /** Retrieves a message with three arguments. */
+    /**
+     * Retrieves a message with three arguments.
+     *
+     * @param name the resource name
+     * @param a1 the parameter number 1
+     * @param a2 the parameter number 2
+     * @param a3 the parameter number 3
+     * @return the message
+     * @throws MissingResourceException the missing resource exception
+     */
     public static String getMessage(String name,
             Object a1,
             Object a2,
@@ -89,7 +126,17 @@ public class Resources {
         return getMessage(name, new Object[] { a1, a2, a3 });
     }
 
-    /** Retrieves a message with four arguments. */
+    /**
+     * Retrieves a message with four arguments.
+     *
+     * @param name the resource name
+     * @param a1 the parameter number 1
+     * @param a2 the parameter number 2
+     * @param a3 the parameter number 3
+     * @param a4 the parameter number 4
+     * @return the message
+     * @throws MissingResourceException the missing resource exception
+     */
     public static String getMessage(String name,
              Object a1,
             Object a2,
@@ -99,7 +146,18 @@ public class Resources {
         return getMessage(name, new Object[] { a1, a2, a3, a4 });
     }
 
-    /** Retrieves a message with five arguments. */
+    /**
+     * Retrieves a message with five arguments.
+     *
+     * @param name the resource name
+     * @param a1 the parameter number 1
+     * @param a2 the parameter number 2
+     * @param a3 the parameter number 3
+     * @param a4 the parameter number 4
+     * @param a5 the parameter number 5
+     * @return the message
+     * @throws MissingResourceException the missing resource exception
+     */
     public static String getMessage(String name,
             Object a1,
             Object a2,
@@ -110,7 +168,19 @@ public class Resources {
         return getMessage(name, new Object[] { a1, a2, a3, a4, a5 });
     }
 
-    /** Retrieves a message with six arguments. */
+    /**
+     * Retrieves a message with six arguments.
+     *
+     * @param name the resource name
+     * @param a1 the parameter number 1
+     * @param a2 the parameter number 2
+     * @param a3 the parameter number 3
+     * @param a4 the parameter number 4
+     * @param a5 the parameter number 5
+     * @param a6 the parameter number 6
+     * @return the message
+     * @throws MissingResourceException the missing resource exception
+     */
     public static String getMessage(String name,
             Object a1,
             Object a2,
