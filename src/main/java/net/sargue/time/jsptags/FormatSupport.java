@@ -22,7 +22,7 @@ import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
 import java.text.DateFormat;
-import java.time.ZoneId;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
 import java.util.Locale;
@@ -113,11 +113,23 @@ public abstract class FormatSupport extends TagSupport {
         }
 
         // set formatter timezone
-        ZoneId tz = this.zoneId;
-        if (tz == null) {
-            tz = ZoneIdSupport.getZoneId(pageContext, this);
+        ZoneId zoneId = this.zoneId;
+        if (zoneId == null) {
+            zoneId = ZoneIdSupport.getZoneId(pageContext, this);
         }
-        formatter = formatter.withZone(tz == null ? ZoneId.systemDefault() : tz);
+        if (zoneId != null) {
+            formatter = formatter.withZone(zoneId);
+        } else {
+            if (value instanceof Instant ||
+                value instanceof LocalDateTime ||
+                value instanceof OffsetDateTime ||
+                value instanceof OffsetTime ||
+                value instanceof LocalTime)
+                // these time objects may need a zone to resolve some patterns
+                // and/or styles, and as there is no zone we revert to the
+                // system default zone
+                formatter = formatter.withZone(ZoneId.systemDefault());
+        }
 
         // format value
         String formatted;

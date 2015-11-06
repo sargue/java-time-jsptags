@@ -4,22 +4,22 @@
 
 This project provides JSP tags for the new java.time package present in Java 8.
 
-The java.time packages are specified in JSR-310 and are based on the Joda-Time library.
+The java.time packages are specified in JSR-310 and are based on the Joda-Time 
+library.
 
 This project is forked from and based on the original Joda-Time JSP Tags.
 
 ### Project status
 
-The status is currently alpha stage.
+The status is currently beta stage.
 
-I started this project because I needed a replacement of Joda-Time JSP Tags after
-migration of a project to Java 8. There are some basic test but the project just
-uses some basic formatting so everything about locale, zones, parsing is untested.
+I started this project because I needed a replacement of Joda-Time JSP Tags 
+after migration of a project to Java 8.
 
 ### About
 
-This library works very similarly to the date-related tags in the jstl fmt library and
-almost exactly as the tags in the original Joda-Time JSP Tags.
+This library works very similarly to the date-related tags in the jstl fmt 
+library and almost exactly as the tags in the original Joda-Time JSP Tags.
 
 ### Requirements
 
@@ -33,7 +33,7 @@ almost exactly as the tags in the original Joda-Time JSP Tags.
 Add the dependency to your project:
 
 #### Gradle
-`compile 'net.sargue:java-time-jsptags:1.1.0'`
+`compile 'net.sargue:java-time-jsptags:1.1.1'`
 
 #### Maven
 
@@ -41,7 +41,7 @@ Add the dependency to your project:
 <dependency>
     <groupId>net.sargue</groupId>
     <artifactId>java-time-jsptags</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
 </dependency>
 ```
 
@@ -64,9 +64,27 @@ Example:
 
 Formats any `java.util.Temporal` like `Instant`, `LocalDateTime`, `LocalDate`, `LocalTime`, etc.
 The `var` and `scope` attributes can be used to set the value of a variable instead of printing the result.
-The time zone may be specified using an attribute, an enclosing `<javatime:zoneId/>` tag,
-preceding `<javatime:setZoneId/>` tag, or via the `net.sargue.time.zoneId` scoped variable. If the
-time zone is not specified it will default to the **system default time-zone**.
+
+###### Time zone (ZoneId)
+
+A time zone may be necessary to perform some formatting. It depends on the
+desired format and the value object. An `Instant` has no time zone so if you
+want a _long_ style time format (which outputs the time zone) you will need
+to adjust using a time zone. A `ZonedDateTime` has all the information needed
+but you may want to change the display time zone.
+
+The time zone may be specified using an attribute, an enclosing 
+`<javatime:zoneId/>` tag, preceding `<javatime:setZoneId/>` tag, or via the 
+`net.sargue.time.zoneId` scoped variable.
+
+The time zone will default to the **system default time-zone** if none is
+specified and the value object is one of these classes:
+
+* `Instant`
+* `LocalDateTime`
+* `LocalTime`
+* `OffsetDateTime`
+* `OffsetLocalTime`
 
 Attributes:
 

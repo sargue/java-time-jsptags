@@ -14,7 +14,7 @@ import java.time.LocalDate;
 import java.util.Locale;
 
 /**
- * Basic tests.
+ * Basic parse tests.
  *
  * @author Sergi Baila
  * @link http://blog.agilelogicsolutions.com/2011/02/unit-testing-jsp-custom-tag-using.html
