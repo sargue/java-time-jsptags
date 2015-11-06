@@ -64,7 +64,7 @@ uploadArchives {
             }
 
             pom.project {
-                name name
+                name 'Java 8 java.time JSP tags'
                 packaging 'jar'
                 description 'JSP tag support for Java 8 java.time (JSR-310)'
                 url 'https://github.com/sargue/java-time-jsptags'
