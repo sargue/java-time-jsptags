@@ -234,8 +234,12 @@ Build is based on gradle. See build.gradle included in the repository.
 
 ### Changelog
 
+##### v1.1.1
+Fixed issue [#2](https://github.com/sargue/java-time-jsptags/issues/2), better 
+support of time zones on formatting.
+
 ##### v1.1.0
-Fixed issue #1, added more parse tags.
+Fixed issue [#1](https://github.com/sargue/java-time-jsptags/issues/1), added more parse tags.
 
 ##### v1.0.0
 Some tests added. Minor refactorings and no functionality changed.
