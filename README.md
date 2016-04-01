@@ -11,9 +11,7 @@ This project is forked from and based on the original Joda-Time JSP Tags.
 
 ### Project status
 
-The status is currently beta stage.
-
-I started this project because I needed a replacement of Joda-Time JSP Tags 
+I started this project because I needed a replacement of Joda-Time JSP Tags
 after migration of a project to Java 8.
 
 ### About
@@ -33,7 +31,7 @@ library and almost exactly as the tags in the original Joda-Time JSP Tags.
 Add the dependency to your project:
 
 #### Gradle
-`compile 'net.sargue:java-time-jsptags:1.1.1'`
+`compile 'net.sargue:java-time-jsptags:1.1.2'`
 
 #### Maven
 
@@ -41,7 +39,7 @@ Add the dependency to your project:
 <dependency>
     <groupId>net.sargue</groupId>
     <artifactId>java-time-jsptags</artifactId>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
 </dependency>
 ```
 
@@ -233,6 +231,13 @@ a `zoneId` attribute and is not nested within a `<javatime:zoneId/>` tag.
 Build is based on gradle. See build.gradle included in the repository.
 
 ### Changelog
+
+##### v1.1.2
+I have changed the gradle build to use the gradle wrapper and gradle version
+2.12 which finally includes a compile-only (like *provided*) configuration.
+I have updated the build script acordingly. It shouldn't break any build but I
+detected that including this library before this change leaked some undesired
+jar files (like the JSTL API).
 
 ##### v1.1.1
 Fixed issue [#2](https://github.com/sargue/java-time-jsptags/issues/2), better 

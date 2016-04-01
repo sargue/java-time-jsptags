@@ -1,10 +1,11 @@
 apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'signing'
+apply plugin: 'idea'
 
 group = 'net.sargue'
 archivesBaseName = 'java-time-jsptags'
-version = '1.1.1'
+version = '1.1.2'
 
 def NEXUS_USERNAME = hasProperty('NEXUS_USERNAME') ? NEXUS_USERNAME : ''
 def NEXUS_PASSWORD = hasProperty('NEXUS_PASSWORD') ? NEXUS_PASSWORD : ''
@@ -17,10 +18,15 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    testCompile.extendsFrom compileOnly
+}
+
 dependencies {
-    compile 'javax.servlet:javax.servlet-api:3.0.1'
-    compile 'javax.servlet.jsp:javax.servlet.jsp-api:2.2.1'
-    compile 'javax.servlet.jsp.jstl:javax.servlet.jsp.jstl-api:1.2.1'
+    compileOnly 'javax.servlet:javax.servlet-api:3.0.1'
+    compileOnly 'javax.servlet.jsp:javax.servlet.jsp-api:2.2.1'
+    compileOnly 'javax.servlet.jsp.jstl:javax.servlet.jsp.jstl-api:1.2.1'
+
     testCompile 'junit:junit:4.12'
     testCompile 'org.springframework:spring-test:4.1.7.RELEASE'
 }
