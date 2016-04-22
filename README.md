@@ -1,6 +1,7 @@
 [![Build Status](https://travis-ci.org/sargue/java-time-jsptags.svg?branch=master)](https://travis-ci.org/sargue/java-time-jsptags)
 
-## Java 8 java.time JSP tags
+Java 8 java.time JSP tags
+=========================
 
 This project provides JSP tags for the new java.time package present in Java 8.
 
@@ -9,31 +10,35 @@ library.
 
 This project is forked from and based on the original Joda-Time JSP Tags.
 
-### Project status
+Project status
+--------------
 
 I started this project because I needed a replacement of Joda-Time JSP Tags
 after migration of a project to Java 8.
 
-### About
+About
+-----
 
 This library works very similarly to the date-related tags in the jstl fmt 
 library and almost exactly as the tags in the original Joda-Time JSP Tags.
 
-### Requirements
+Requirements
+------------
 
 * Java 8
 * Servlet 2.4
 * JSP 2.0
 * JSTL 1.1
 
-### Usage
+Usage
+-----
 
 Add the dependency to your project:
 
-#### Gradle
+### Gradle
 `compile 'net.sargue:java-time-jsptags:1.1.2'`
 
-#### Maven
+### Maven
 
 ```xml
 <dependency>
@@ -43,7 +48,7 @@ Add the dependency to your project:
 </dependency>
 ```
 
-#### Tag library declaration
+### Tag library declaration
 
 Declare the library as follows in your jsp pages:
 
@@ -51,9 +56,15 @@ Declare the library as follows in your jsp pages:
 <%@ taglib uri="http://sargue.net/jsptags/time" prefix="javatime" %>
 ```
 
-#### Tags
+### Javadocs
 
-##### &lt;javatime:format&gt;
+You can [browse online the javadocs](http://www.javadoc.io/doc/net.sargue/java-time-jsptags) thanks to the great [javadoc.io](http://javadoc.io) service.
+
+Tags
+====
+
+&lt;javatime:format&gt;
+-----------------------
 
 Example:
 ```
@@ -63,7 +74,7 @@ Example:
 Formats any `java.util.Temporal` like `Instant`, `LocalDateTime`, `LocalDate`, `LocalTime`, etc.
 The `var` and `scope` attributes can be used to set the value of a variable instead of printing the result.
 
-###### Time zone (ZoneId)
+### Time zone (ZoneId)
 
 A time zone may be necessary to perform some formatting. It depends on the
 desired format and the value object. An `Instant` has no time zone so if you
@@ -96,7 +107,8 @@ Attributes:
 | pattern          | The pattern to use for formatting (see java.time format documentation for recognized pattern strings) |
 | zoneId           | The time zone to use for formatting. See comment above for fallback and defaults.                     |
 
-##### &lt;javatime:parseInstant&gt;
+&lt;javatime:parseInstant&gt;
+-----------------------------
 
 Example:
 ```
@@ -120,7 +132,8 @@ Attributes:
 | pattern   | The pattern to use for parsing (see java.time format documentation for recognized pattern strings)                                            |
 | zoneId    | The time zone to use for parsing. See comment above for fallback and defaults.                                                                |
 
-##### &lt;javatime:parseLocalDateTime&gt;
+&lt;javatime:parseLocalDateTime&gt;
+-----------------------------------
 
 Example:
 ```
@@ -144,7 +157,8 @@ Attributes:
 | pattern   | The pattern to use for parsing (see java.time format documentation for recognized pattern strings)                                            |
 | zoneId    | The time zone to use for parsing. See comment above for fallback and defaults.                                                                |
 
-##### &lt;javatime:parseLocalDate&gt;
+&lt;javatime:parseLocalDate&gt;
+-------------------------------
 
 Example:
 ```
@@ -168,7 +182,8 @@ Attributes:
 | pattern   | The pattern to use for parsing (see java.time format documentation for recognized pattern strings)                                            |
 | zoneId    | The time zone to use for parsing. See comment above for fallback and defaults.                                                                |
 
-##### &lt;javatime:parseLocalTime&gt;
+&lt;javatime:parseLocalTime&gt;
+-------------------------------
 
 Example:
 ```
@@ -192,7 +207,8 @@ Attributes:
 | pattern   | The pattern to use for parsing (see java.time format documentation for recognized pattern strings)                                            |
 | zoneId    | The time zone to use for parsing. See comment above for fallback and defaults.                                                                |
 
-##### &lt;javatime:zoneId&gt;
+&lt;javatime:zoneId&gt;
+-----------------------
 
 Example:
 ```
@@ -208,7 +224,8 @@ The `<javatime:format/>` tag may override this value with an explicit `zoneId` a
 |:-----------------|:----------------------------------------------|
 | value (required) | The default time zone for nested tags to use. |
 
-##### &lt;javatime:setZoneId&gt;
+&lt;javatime:setZoneId&gt;
+--------------------------
 
 Example:
 ```
@@ -226,34 +243,37 @@ a `zoneId` attribute and is not nested within a `<javatime:zoneId/>` tag.
 | var              | The scoped variable to set.       |
 | scope            | The scope of the variable to set. |
 
-### Build
+Build
+=====
 
 Build is based on gradle. See build.gradle included in the repository.
 
-### Changelog
+Changelog
+---------
 
-##### v1.1.2
+### v1.1.2
 I have changed the gradle build to use the gradle wrapper and gradle version
 2.12 which finally includes a compile-only (like *provided*) configuration.
 I have updated the build script acordingly. It shouldn't break any build but I
 detected that including this library before this change leaked some undesired
 jar files (like the JSTL API).
 
-##### v1.1.1
+### v1.1.1
 Fixed issue [#2](https://github.com/sargue/java-time-jsptags/issues/2), better 
 support of time zones on formatting.
 
-##### v1.1.0
+### v1.1.0
 Fixed issue [#1](https://github.com/sargue/java-time-jsptags/issues/1), added more parse tags.
 
-##### v1.0.0
+### v1.0.0
 Some tests added. Minor refactorings and no functionality changed.
 Some documentation. Moved to gradle build. Preparing to publish to Maven Central.
 
-##### v0.1
+### v0.1
 First released version just with some refactoring, no tests, no documentation.
 
-### Contributing
+Contributing
+============
 
 If you found any bug please report it to the GitHub issues page.
 
