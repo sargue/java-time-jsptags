@@ -18,7 +18,7 @@ after migration of a project to Java 8.
 
 The library is pretty stable right now. Should you have any problem
 please file an issue. There is no planned development for this library,
-just bugfix manteinance.
+just bugfix maintenance.
 
 About
 -----
