@@ -60,19 +60,15 @@ Declare the library as follows in your jsp pages:
 
 You can [browse online the javadocs](http://www.javadoc.io/doc/net.sargue/java-time-jsptags) thanks to the great [javadoc.io](http://javadoc.io) service.
 
-Tags
-====
+### *Style* and *pattern* attributes
 
-&lt;javatime:format&gt;
------------------------
+Most tags have the attributes `style` and `pattern` which control the formatter beneath the tag.
 
-Example:
-```
-<javatime:format value="${dt}" style="MS" />
-```
+The `style` expected value is two characters, one for date, one for time, from S=Short, M=Medium, L=Long, F=Full, -=None.
+They directly map to the enum [`FormatStyle`](https://docs.oracle.com/javase/8/docs/api/java/time/format/FormatStyle.html)
 
-Formats any `java.util.Temporal` like `Instant`, `LocalDateTime`, `LocalDate`, `LocalTime`, etc.
-The `var` and `scope` attributes can be used to set the value of a variable instead of printing the result.
+The `pattern` attribute is for complete control over your formatting.
+The syntax is explain in the [`DateTimeFormatter`](https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html)
 
 ### Time zone (ZoneId)
 
@@ -95,6 +91,20 @@ specified and the value object is one of these classes:
 * `OffsetDateTime`
 * `OffsetLocalTime`
 
+Tags
+====
+
+&lt;javatime:format&gt;
+-----------------------
+
+Example:
+```
+<javatime:format value="${dt}" style="MS" />
+```
+
+Formats any `java.util.Temporal` like `Instant`, `LocalDateTime`, `LocalDate`, `LocalTime`, etc.
+The `var` and `scope` attributes can be used to set the value of a variable instead of printing the result.
+
 Attributes:
 
 | Attribute        | Description                                                                                           |
@@ -103,7 +113,7 @@ Attributes:
 | var              | The scoped variable to set.                                                                           |
 | scope            | The scope of the variable to set.                                                                     |
 | locale           | The locale to use for formatting.                                                                     |
-| style            | The style to use for formatting (see java.time format documentation for recognized style strings)     |
+| style            | The style to use for formatting (two characters, one for date, one for time, from S=Short, M=Medium, L=Long, F=Full, -=None)|
 | pattern          | The pattern to use for formatting (see java.time format documentation for recognized pattern strings) |
 | zoneId           | The time zone to use for formatting. See comment above for fallback and defaults.                     |
 
@@ -128,7 +138,7 @@ Attributes:
 | var       | The scoped variable to set.                                                                                                                   |
 | scope     | The scope of the variable to set.                                                                                                             |
 | locale    | The locale to use for parsing.                                                                                                                |
-| style     | The style to use for parsing (see java.time format documentation for recognized style strings)                                                |
+| style     | The style to use for parsing (two characters, one for date, one for time, from S=Short, M=Medium, L=Long, F=Full, -=None)|
 | pattern   | The pattern to use for parsing (see java.time format documentation for recognized pattern strings)                                            |
 | zoneId    | The time zone to use for parsing. See comment above for fallback and defaults.                                                                |
 
@@ -153,7 +163,7 @@ Attributes:
 | var       | The scoped variable to set.                                                                                                                   |
 | scope     | The scope of the variable to set.                                                                                                             |
 | locale    | The locale to use for parsing.                                                                                                                |
-| style     | The style to use for parsing (see java.time format documentation for recognized style strings)                                                |
+| style     | The style to use for parsing (two characters, one for date, one for time, from S=Short, M=Medium, L=Long, F=Full, -=None)|
 | pattern   | The pattern to use for parsing (see java.time format documentation for recognized pattern strings)                                            |
 | zoneId    | The time zone to use for parsing. See comment above for fallback and defaults.                                                                |
 
@@ -178,7 +188,7 @@ Attributes:
 | var       | The scoped variable to set.                                                                                                                   |
 | scope     | The scope of the variable to set.                                                                                                             |
 | locale    | The locale to use for parsing.                                                                                                                |
-| style     | The style to use for parsing (see java.time format documentation for recognized style strings)                                                |
+| style     | The style to use for parsing (two characters, one for date, one for time, from S=Short, M=Medium, L=Long, F=Full, -=None)|
 | pattern   | The pattern to use for parsing (see java.time format documentation for recognized pattern strings)                                            |
 | zoneId    | The time zone to use for parsing. See comment above for fallback and defaults.                                                                |
 
@@ -203,7 +213,7 @@ Attributes:
 | var       | The scoped variable to set.                                                                                                                   |
 | scope     | The scope of the variable to set.                                                                                                             |
 | locale    | The locale to use for parsing.                                                                                                                |
-| style     | The style to use for parsing (see java.time format documentation for recognized style strings)                                                |
+| style     | The style to use for parsing (two characters, one for date, one for time, from S=Short, M=Medium, L=Long, F=Full, -=None)|
 | pattern   | The pattern to use for parsing (see java.time format documentation for recognized pattern strings)                                            |
 | zoneId    | The time zone to use for parsing. See comment above for fallback and defaults.                                                                |
 
