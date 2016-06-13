@@ -16,6 +16,10 @@ Project status
 I started this project because I needed a replacement of Joda-Time JSP Tags
 after migration of a project to Java 8.
 
+The library is pretty stable right now. Should you have any problem
+please file an issue. There is no planned development for this library,
+just bugfix manteinance.
+
 About
 -----
 
@@ -68,7 +72,7 @@ The `style` expected value is two characters, one for date, one for time, from S
 They directly map to the enum [`FormatStyle`](https://docs.oracle.com/javase/8/docs/api/java/time/format/FormatStyle.html)
 
 The `pattern` attribute is for complete control over your formatting.
-The syntax is explain in the [`DateTimeFormatter`](https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html)
+The syntax is explained in the [`DateTimeFormatter`](https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html)
 
 ### Time zone (ZoneId)
 
