@@ -124,7 +124,7 @@ Attributes:
 
 | Attribute | Description                                                                                                                                   |
 |:----------|:----------------------------------------------------------------------------------------------------------------------------------------------|
-| value     | Required unless value is nested within tag. Must be a string which can be parsed into a `java.time.Instant` according to the parsing options specified. |
+| value     | Required. Must be a string which can be parsed into a `java.time.Instant` according to the parsing options specified. |
 | var       | The scoped variable to set.                                                                                                                   |
 | scope     | The scope of the variable to set.                                                                                                             |
 | locale    | The locale to use for parsing.                                                                                                                |
@@ -149,7 +149,7 @@ Attributes:
 
 | Attribute | Description                                                                                                                                   |
 |:----------|:----------------------------------------------------------------------------------------------------------------------------------------------|
-| value     | Required unless value is nested within tag. Must be a string which can be parsed into a `java.time.LocalDateTime` according to the parsing options specified. |
+| value     | Required. Must be a string which can be parsed into a `java.time.LocalDateTime` according to the parsing options specified. |
 | var       | The scoped variable to set.                                                                                                                   |
 | scope     | The scope of the variable to set.                                                                                                             |
 | locale    | The locale to use for parsing.                                                                                                                |
@@ -174,7 +174,7 @@ Attributes:
 
 | Attribute | Description                                                                                                                                   |
 |:----------|:----------------------------------------------------------------------------------------------------------------------------------------------|
-| value     | Required unless value is nested within tag. Must be a string which can be parsed into a `java.time.LocalDate` according to the parsing options specified. |
+| value     | Required. Must be a string which can be parsed into a `java.time.LocalDate` according to the parsing options specified. |
 | var       | The scoped variable to set.                                                                                                                   |
 | scope     | The scope of the variable to set.                                                                                                             |
 | locale    | The locale to use for parsing.                                                                                                                |
@@ -199,7 +199,7 @@ Attributes:
 
 | Attribute | Description                                                                                                                                   |
 |:----------|:----------------------------------------------------------------------------------------------------------------------------------------------|
-| value     | Required unless value is nested within tag. Must be a string which can be parsed into a `java.time.LocalTime` according to the parsing options specified. |
+| value     | Required. Must be a string which can be parsed into a `java.time.LocalTime` according to the parsing options specified. |
 | var       | The scoped variable to set.                                                                                                                   |
 | scope     | The scope of the variable to set.                                                                                                             |
 | locale    | The locale to use for parsing.                                                                                                                |
