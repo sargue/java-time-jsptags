@@ -40,7 +40,7 @@ Usage
 Add the dependency to your project:
 
 ### Gradle
-`compile 'net.sargue:java-time-jsptags:1.1.2'`
+`compile 'net.sargue:java-time-jsptags:1.1.3'`
 
 ### Maven
 
@@ -48,7 +48,7 @@ Add the dependency to your project:
 <dependency>
     <groupId>net.sargue</groupId>
     <artifactId>java-time-jsptags</artifactId>
-    <version>1.1.2</version>
+    <version>1.1.3</version>
 </dependency>
 ```
 
@@ -264,6 +264,9 @@ Build is based on gradle. See build.gradle included in the repository.
 
 Changelog
 ---------
+
+### v1.1.3
+Fixed issue [#5](https://github.com/sargue/java-time-jsptags/issues/5) about error messages.
 
 ### v1.1.2
 I have changed the gradle build to use the gradle wrapper and gradle version

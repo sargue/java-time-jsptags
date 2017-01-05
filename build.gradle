@@ -1,21 +1,20 @@
+plugins {
+    id "com.jfrog.bintray" version "1.7.3"
+}
+
 apply plugin: 'java'
 apply plugin: 'maven'
-apply plugin: 'signing'
-apply plugin: 'idea'
 
 group = 'net.sargue'
 archivesBaseName = 'java-time-jsptags'
-version = '1.1.2'
-
-def NEXUS_USERNAME = hasProperty('NEXUS_USERNAME') ? NEXUS_USERNAME : ''
-def NEXUS_PASSWORD = hasProperty('NEXUS_PASSWORD') ? NEXUS_PASSWORD : ''
+version = '1.1.3'
 
 sourceCompatibility = 1.8
 compileJava.options.encoding = 'UTF-8'
 compileTestJava.options.encoding = 'UTF-8'
 
 repositories {
-    mavenCentral()
+    jcenter()
 }
 
 configurations {
@@ -52,49 +51,53 @@ artifacts {
     archives javadocJar, sourcesJar
 }
 
-signing {
-    sign configurations.archives
+install {
+    repositories.mavenInstaller {
+        pom.project {
+            name 'Java 8 java.time JSP tags'
+            description 'JSP tag support for Java 8 java.time (JSR-310)'
+            url 'https://github.com/sargue/java-time-jsptags'
+
+            scm {
+                connection 'scm:git:git@github.com:sargue/java-time-jsptags.git'
+                developerConnection 'scm:git:git@github.com:sargue/java-time-jsptags.git'
+                url 'git@github.com:sargue/java-time-jsptags.git'
+            }
+
+            licenses {
+                license {
+                    name 'The Apache License, Version 2.0'
+                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                }
+            }
+
+            developers {
+                developer {
+                    id 'sargue'
+                    name 'Sergi Baila'
+                    email 'sargue@gmail.com'
+                }
+            }
+        }
+    }
 }
 
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+bintray {
+    user = project.hasProperty('BINTRAY_USER') ? BINTRAY_USER : ''
+    key = project.hasProperty('BINTRAY_KEY') ? BINTRAY_KEY : ''
+    configurations = ['archives']
+    pkg {
+        repo = 'maven'
+        name = 'net.sargue:java-time-jsptags'
+        licenses = ['Apache-2.0']
+        vcsUrl = 'https://github.com/sargue/java-time-jsptags'
+        version {
+            name = project.version
+            desc = 'JSP tag support for Java 8 java.time (JSR-310)'
 
-            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                authentication(userName: NEXUS_USERNAME, password: NEXUS_PASSWORD)
-            }
-
-            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-                authentication(userName: NEXUS_USERNAME, password: NEXUS_PASSWORD)
-            }
-
-            pom.project {
-                name 'Java 8 java.time JSP tags'
-                packaging 'jar'
-                description 'JSP tag support for Java 8 java.time (JSR-310)'
-                url 'https://github.com/sargue/java-time-jsptags'
-
-                scm {
-                    connection 'scm:git:git@github.com:sargue/java-time-jsptags.git'
-                    developerConnection 'scm:git:git@github.com:sargue/java-time-jsptags.git'
-                    url 'git@github.com:sargue/java-time-jsptags.git'
-                }
-
-                licenses {
-                    license {
-                        name 'The Apache License, Version 2.0'
-                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                    }
-                }
-
-                developers {
-                    developer {
-                        id 'sargue'
-                        name 'Sergi Baila'
-                        email 'sargue@gmail.com'
-                    }
-                }
+            gpg {
+                sign = true
+                passphrase = project.hasProperty('BINTRAY_GPG') ? BINTRAY_GPG : ''
             }
         }
     }
