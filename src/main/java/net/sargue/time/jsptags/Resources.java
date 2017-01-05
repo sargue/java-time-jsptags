@@ -46,7 +46,7 @@ public class Resources {
     // Static data
 
     /** The location of our resources. */
-    private static final String RESOURCE_LOCATION = "Resources";
+    private static final String RESOURCE_LOCATION = "net.sargue.time.jsptags.Resources";
 
     /** Our class-wide ResourceBundle. */
     private static ResourceBundle rb = ResourceBundle.getBundle(RESOURCE_LOCATION);
