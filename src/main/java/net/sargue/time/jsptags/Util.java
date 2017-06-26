@@ -591,15 +591,18 @@ public class Util {
      */
 
     /**
-     * Select a format from a two character style pattern. The first character
+     * Creates a formatter from a two character style pattern. The first character
      * is the date style, and the second character is the time style. Specify a
      * character of 'S' for short style, 'M' for medium, 'L' for long, and 'F'
      * for full. A date or time may be ommitted by specifying a style character '-'.
      *
      * @param style  two characters from the set {"S", "M", "L", "F", "-"}
      * @throws IllegalArgumentException if the style is invalid
+     * @return a formatter for the specified style
      */
-    static DateTimeFormatter createFormatterForStyle(String style) throws JspException {
+    public static DateTimeFormatter createFormatterForStyle(String style)
+        throws JspException
+    {
         if (style == null || style.length() != 2) {
             throw new JspException("Invalid style specification: " + style);
         }
