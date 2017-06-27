@@ -597,7 +597,7 @@ public class Util {
      * for full. A date or time may be ommitted by specifying a style character '-'.
      *
      * @param style  two characters from the set {"S", "M", "L", "F", "-"}
-     * @throws IllegalArgumentException if the style is invalid
+     * @throws JspException if the style is invalid
      * @return a formatter for the specified style
      */
     public static DateTimeFormatter createFormatterForStyle(String style)

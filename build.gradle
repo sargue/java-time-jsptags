@@ -7,7 +7,7 @@ apply plugin: 'maven'
 
 group = 'net.sargue'
 archivesBaseName = 'java-time-jsptags'
-version = '1.1.3'
+version = '1.1.4'
 
 sourceCompatibility = 1.8
 compileJava.options.encoding = 'UTF-8'
