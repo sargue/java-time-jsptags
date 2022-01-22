@@ -134,7 +134,7 @@ public class FormatTagTest {
 		assertEquals("11:01", format(offsetTime, null, "-S"));
 		assertEquals("11:01:39", format(offsetTime, null, "-M"));
 		assertEquals("11:01:39 CET", format(offsetTime, null, "-L"));
-		assertEquals("11:01:39 CET", format(offsetTime, null, "-F"));
+		assertEquals("11:01:39 (Hora del Centre d’Europa)", format(offsetTime, null, "-F"));
 	}
 
 	@Test
