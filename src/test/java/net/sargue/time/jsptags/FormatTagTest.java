@@ -1,3 +1,5 @@
+package net.sargue.time.jsptags;
+
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
@@ -24,7 +26,6 @@ import org.springframework.mock.web.MockPageContext;
 import org.springframework.mock.web.MockServletContext;
 
 import jakarta.servlet.jsp.JspException;
-import net.sargue.time.jsptags.FormatTag;
 
 /**
  * Basic format tests.

@@ -1,3 +1,5 @@
+package net.sargue.time.jsptags;
+
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
 import java.util.Locale;
@@ -9,7 +11,6 @@ import org.springframework.mock.web.MockPageContext;
 import org.springframework.mock.web.MockServletContext;
 
 import jakarta.servlet.jsp.JspException;
-import net.sargue.time.jsptags.ParseLocalDateTag;
 
 /**
  * Basic parse tests.
