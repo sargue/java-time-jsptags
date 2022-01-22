@@ -140,7 +140,7 @@ public class FormatTagTest {
 	@Test
 	public void yearTest() throws IOException, JspException {
 		Year year = Year.parse("2015");
-		assertEquals("2015 15 2015 2015 2015 15 2015 2015 dC dC dC AD",
+		assertEquals("2015 15 2015 2015 2015 15 2015 2015 dC dC dC després de Crist",
 				format(year, "u uu uuu uuuu y yy yyyy yyyy G GG GGG GGGG", null));
 	}
 
