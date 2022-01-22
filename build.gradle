@@ -1,9 +1,8 @@
 plugins {
     id "com.jfrog.bintray" version "1.7.3"
+    id "java"
+    id "eclipse"
 }
-
-apply plugin: 'java'
-apply plugin: 'maven'
 
 group = 'net.sargue'
 archivesBaseName = 'java-time-jsptags'
@@ -14,7 +13,8 @@ compileJava.options.encoding = 'UTF-8'
 compileTestJava.options.encoding = 'UTF-8'
 
 repositories {
-    jcenter()
+    mavenLocal()
+    mavenCentral()
 }
 
 configurations {
@@ -26,8 +26,8 @@ dependencies {
     compileOnly 'javax.servlet.jsp:javax.servlet.jsp-api:2.2.1'
     compileOnly 'javax.servlet.jsp.jstl:javax.servlet.jsp.jstl-api:1.2.1'
 
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.springframework:spring-test:4.1.7.RELEASE'
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.springframework:spring-test:4.1.7.RELEASE'
 }
 
 jar {
@@ -51,36 +51,36 @@ artifacts {
     archives javadocJar, sourcesJar
 }
 
-install {
-    repositories.mavenInstaller {
-        pom.project {
-            name 'Java 8 java.time JSP tags'
-            description 'JSP tag support for Java 8 java.time (JSR-310)'
-            url 'https://github.com/sargue/java-time-jsptags'
-
-            scm {
-                connection 'scm:git:git@github.com:sargue/java-time-jsptags.git'
-                developerConnection 'scm:git:git@github.com:sargue/java-time-jsptags.git'
-                url 'git@github.com:sargue/java-time-jsptags.git'
-            }
-
-            licenses {
-                license {
-                    name 'The Apache License, Version 2.0'
-                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                }
-            }
-
-            developers {
-                developer {
-                    id 'sargue'
-                    name 'Sergi Baila'
-                    email 'sargue@gmail.com'
-                }
-            }
-        }
-    }
-}
+// install {
+//     repositories.mavenInstaller {
+//         pom.project {
+//             name 'Java 8 java.time JSP tags'
+//             description 'JSP tag support for Java 8 java.time (JSR-310)'
+//             url 'https://github.com/sargue/java-time-jsptags'
+// 
+//             scm {
+//                 connection 'scm:git:git@github.com:sargue/java-time-jsptags.git'
+//                 developerConnection 'scm:git:git@github.com:sargue/java-time-jsptags.git'
+//                 url 'git@github.com:sargue/java-time-jsptags.git'
+//             }
+// 
+//             licenses {
+//                 license {
+//                     name 'The Apache License, Version 2.0'
+//                     url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+//                 }
+//             }
+// 
+//             developers {
+//                 developer {
+//                     id 'sargue'
+//                     name 'Sergi Baila'
+//                     email 'sargue@gmail.com'
+//                 }
+//             }
+//         }
+//     }
+// }
 
 bintray {
     user = project.hasProperty('BINTRAY_USER') ? BINTRAY_USER : ''
@@ -99,6 +99,18 @@ bintray {
                 sign = true
                 passphrase = project.hasProperty('BINTRAY_GPG') ? BINTRAY_GPG : ''
             }
+        }
+    }
+}
+
+eclipse {
+    classpath {
+        file {
+            // remove entries added due to issue with testsets                                                                      
+            // https://github.com/unbroken-dome/gradle-testsets-plugin/issues/77                                                    
+            whenMerged {                                                                                                            
+                entries.removeAll{it.kind == "lib" && (it.path.endsWith("build/classes/java/test") || it.path.endsWith("build/resources/test"))}
+            }                                                                                                                       
         }
     }
 }
