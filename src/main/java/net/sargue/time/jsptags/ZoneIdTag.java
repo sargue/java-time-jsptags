@@ -16,8 +16,6 @@
  */
 package net.sargue.time.jsptags;
 
-import jakarta.servlet.jsp.JspTagException;
-
 /**
  * A handler for &lt;zoneId&gt;.
  * 
@@ -26,9 +24,13 @@ import jakarta.servlet.jsp.JspTagException;
  */
 public class ZoneIdTag extends ZoneIdSupport {
 
-    // for tag attribute
-    public void setValue(Object value) throws JspTagException {
-        this.value = value;
-    }
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * @param value for tag attribute
+	 */
+	public void setValue(final Object value) {
+		this.value = value;
+	}
 
 }

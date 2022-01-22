@@ -2,7 +2,8 @@ plugins {
     id "com.jfrog.bintray" version "1.7.3"
     id "java"
     id "eclipse"
-    id "com.github.ben-manes.versions" version "0.41.0" // adds dependencyUpdates task   
+    id "com.github.ben-manes.versions" version "0.41.0" // adds dependencyUpdates task
+    id "maven-publish"
 }
 
 group = 'net.sargue'

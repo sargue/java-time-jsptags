@@ -27,6 +27,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Locale;
@@ -77,8 +78,8 @@ public class Util {
 	 * 
 	 * @return PageContext constant corresponding to given scope description
 	 */
-	public static int getScope(String scope) {
-		int ret = PageContext.PAGE_SCOPE; // default
+	public static int getScope(final String scope) {
+		final int ret;
 
 		if (REQUEST.equalsIgnoreCase(scope)) {
 			ret = PageContext.REQUEST_SCOPE;
@@ -86,6 +87,9 @@ public class Util {
 			ret = PageContext.SESSION_SCOPE;
 		} else if (APPLICATION.equalsIgnoreCase(scope)) {
 			ret = PageContext.APPLICATION_SCOPE;
+		} else {
+			// default;
+			ret = PageContext.PAGE_SCOPE;
 		}
 		return ret;
 	}
@@ -101,8 +105,8 @@ public class Util {
 	 * @return the locales from the request or an empty enumeration if no preferred
 	 *         locale has been specified
 	 */
-	public static Enumeration getRequestLocales(HttpServletRequest request) {
-		Enumeration values = request.getHeaders("accept-language");
+	public static Enumeration<Locale> getRequestLocales(final HttpServletRequest request) {
+		final Enumeration<String> values = request.getHeaders("accept-language");
 		if (values.hasMoreElements()) {
 			// At least one "accept-language". Simply return
 			// the enumeration returned by request.getLocales().
@@ -112,7 +116,7 @@ public class Util {
 			// No header for "accept-language". Simply return
 			// the empty enumeration.
 			// System.out.println("No accept-language");
-			return values;
+			return Collections.emptyEnumeration();
 		}
 	}
 
@@ -123,7 +127,7 @@ public class Util {
 	 * @return {@link java.util.Locale} object corresponding to the given locale
 	 *         string, or the null if the locale string is null or empty
 	 */
-	public static Locale parseLocale(String locale) {
+	public static Locale parseLocale(final String locale) {
 		return parseLocale(locale, null);
 	}
 
@@ -142,8 +146,8 @@ public class Util {
 	 * @throws IllegalArgumentException if the given locale does not have a language
 	 *                                  component or has an empty country component
 	 */
-	public static Locale parseLocale(String locale, String variant) {
-		Locale ret;
+	public static Locale parseLocale(final String locale, final String variant) {
+		final Locale ret;
 		String language = locale;
 		String country = null;
 		int index;
@@ -193,9 +197,9 @@ public class Util {
 	 *               locale
 	 * @param locale the response locale
 	 */
-	static void setResponseLocale(PageContext pc, Locale locale) {
+	static void setResponseLocale(final PageContext pc, final Locale locale) {
 		// set response locale
-		ServletResponse response = pc.getResponse();
+		final ServletResponse response = pc.getResponse();
 		response.setLocale(locale);
 
 		// get response character encoding and store it in session attribute
@@ -223,7 +227,7 @@ public class Util {
 	 *
 	 * @return the formatting locale to use
 	 */
-	static Locale getFormattingLocale(PageContext pc, boolean format, Locale[] avail) {
+	static Locale getFormattingLocale(final PageContext pc, final boolean format, final Locale[] avail) {
 
 		LocalizationContext locCtxt;
 
@@ -271,12 +275,14 @@ public class Util {
 	 */
 	static Locale[] availableFormattingLocales;
 	static {
-		Locale[] dateLocales = DateFormat.getAvailableLocales();
-		Set<Locale> numberLocales = new HashSet<>(Arrays.asList(NumberFormat.getAvailableLocales()));
-		ArrayList<Locale> locales = new ArrayList<>();
-		for (Locale dateLocale : dateLocales)
-			if (numberLocales.contains(dateLocale))
+		final Locale[] dateLocales = DateFormat.getAvailableLocales();
+		final Set<Locale> numberLocales = new HashSet<>(Arrays.asList(NumberFormat.getAvailableLocales()));
+		final ArrayList<Locale> locales = new ArrayList<>();
+		for (Locale dateLocale : dateLocales) {
+			if (numberLocales.contains(dateLocale)) {
 				locales.add(dateLocale);
+			}
+		}
 		availableFormattingLocales = new Locale[locales.size()];
 		availableFormattingLocales = locales.toArray(availableFormattingLocales);
 	}
@@ -299,16 +305,18 @@ public class Util {
 	 *         configuration parameter, or {@code null} if no scoped attribute or
 	 *         configuration parameter with the given name exists
 	 */
-	static Locale getLocale(PageContext pageContext, String name) {
-		Locale loc = null;
+	static Locale getLocale(final PageContext pageContext, final String name) {
+		final Locale loc;
 
-		Object obj = Config.find(pageContext, name);
+		final Object obj = Config.find(pageContext, name);
 		if (obj != null) {
 			if (obj instanceof Locale) {
 				loc = (Locale) obj;
 			} else {
 				loc = parseLocale((String) obj);
 			}
+		} else {
+			loc = null;
 		}
 
 		return loc;
@@ -327,11 +335,11 @@ public class Util {
 	 * 
 	 * @return Best matching locale, or {@code null} if no match was found
 	 */
-	private static Locale findFormattingMatch(PageContext pageContext, Locale[] avail) {
+	private static Locale findFormattingMatch(final PageContext pageContext, final Locale[] avail) {
 		Locale match = null;
-		for (Enumeration enum_ = Util.getRequestLocales((HttpServletRequest) pageContext.getRequest()); enum_
+		for (Enumeration<Locale> enum_ = Util.getRequestLocales((HttpServletRequest) pageContext.getRequest()); enum_
 				.hasMoreElements();) {
-			Locale locale = (Locale) enum_.nextElement();
+			final Locale locale = enum_.nextElement();
 			match = findFormattingMatch(locale, avail);
 			if (match != null) {
 				break;
@@ -358,7 +366,7 @@ public class Util {
 	 * @return Available locale that best matches the given preferred locale, or
 	 *         {@code null} if no match exists
 	 */
-	private static Locale findFormattingMatch(Locale pref, Locale[] avail) {
+	private static Locale findFormattingMatch(final Locale pref, final Locale[] avail) {
 		Locale match = null;
 		boolean langAndCountryMatch = false;
 		for (Locale locale : avail) {
@@ -389,10 +397,10 @@ public class Util {
 	 * @param pc Page in which to look up the default I18N localization context
 	 * @return the localization context
 	 */
-	public static LocalizationContext getLocalizationContext(PageContext pc) {
-		LocalizationContext locCtxt;
+	public static LocalizationContext getLocalizationContext(final PageContext pc) {
+		final LocalizationContext locCtxt;
 
-		Object obj = Config.find(pc, Config.FMT_LOCALIZATION_CONTEXT);
+		final Object obj = Config.find(pc, Config.FMT_LOCALIZATION_CONTEXT);
 		if (obj == null) {
 			return null;
 		}
@@ -413,16 +421,14 @@ public class Util {
 	 * 
 	 * Check if a match exists between the ordered set of preferred locales and the
 	 * available locales, for the given base name. The set of preferred locales
-	 * consists of a single locale (if the
-	 * {@link Config#FMT_LOCALE} configuration setting is present)
-	 * or is equal to the client's preferred locales determined from the client's
-	 * browser settings.
+	 * consists of a single locale (if the {@link Config#FMT_LOCALE} configuration
+	 * setting is present) or is equal to the client's preferred locales determined
+	 * from the client's browser settings.
 	 * 
 	 * <p>
 	 * If no match was found in the previous step, check if a match exists between
-	 * the fallback locale (given by the
-	 * {@link Config#FMT_FALLBACK_LOCALE} configuration setting) and
-	 * the available locales, for the given base name.
+	 * the fallback locale (given by the {@link Config#FMT_FALLBACK_LOCALE}
+	 * configuration setting) and the available locales, for the given base name.
 	 * 
 	 * @param pc       Page in which the resource bundle with the given base name is
 	 *                 requested
@@ -432,7 +438,7 @@ public class Util {
 	 *         base name and the locale that led to the resource bundle match, or
 	 *         the empty localization context if no resource bundle match was found
 	 */
-	public static LocalizationContext getLocalizationContext(PageContext pc, String basename) {
+	public static LocalizationContext getLocalizationContext(final PageContext pc, final String basename) {
 		LocalizationContext locCtxt = null;
 		ResourceBundle bundle;
 
@@ -503,13 +509,13 @@ public class Util {
 	 *         given base name and best matching locale, or {@code null} if no
 	 *         resource bundle match was found
 	 */
-	private static LocalizationContext findMatch(PageContext pageContext, String basename) {
+	private static LocalizationContext findMatch(final PageContext pageContext, final String basename) {
 		LocalizationContext locCtxt = null;
 
 		// Determine locale from client's browser settings.
-		for (Enumeration enum_ = Util.getRequestLocales((HttpServletRequest) pageContext.getRequest()); enum_
+		for (Enumeration<Locale> enum_ = Util.getRequestLocales((HttpServletRequest) pageContext.getRequest()); enum_
 				.hasMoreElements();) {
-			Locale pref = (Locale) enum_.nextElement();
+			Locale pref = enum_.nextElement();
 			ResourceBundle match = findMatch(basename, pref);
 			if (match != null) {
 				locCtxt = new LocalizationContext(match, pref);
@@ -535,7 +541,7 @@ public class Util {
 	 *         language-match between the preferred locale and the locale of the
 	 *         bundle returned by java.util.ResourceBundle.getBundle().
 	 */
-	private static ResourceBundle findMatch(String basename, Locale pref) {
+	private static ResourceBundle findMatch(final String basename, final Locale pref) {
 		ResourceBundle match = null;
 
 		try {
@@ -594,7 +600,7 @@ public class Util {
 	 * @throws JspException if the style is invalid
 	 * @return a formatter for the specified style
 	 */
-	public static DateTimeFormatter createFormatterForStyle(String style) throws JspException {
+	public static DateTimeFormatter createFormatterForStyle(final String style) throws JspException {
 		if (style == null || style.length() != 2) {
 			throw new JspException("Invalid style specification: " + style);
 		}
@@ -613,16 +619,17 @@ public class Util {
 	 * @param timeStyle the time style
 	 * @return the formatter
 	 */
-	private static DateTimeFormatter createFormatterForStyleIndex(FormatStyle dateStyle, FormatStyle timeStyle)
-			throws JspException {
-		if (dateStyle == null && timeStyle == null)
+	private static DateTimeFormatter createFormatterForStyleIndex(final FormatStyle dateStyle,
+			final FormatStyle timeStyle) throws JspException {
+		if (dateStyle == null && timeStyle == null) {
 			throw new JspException("Both styles cannot be null.");
-		else if (dateStyle != null && timeStyle != null)
+		} else if (dateStyle != null && timeStyle != null) {
 			return DateTimeFormatter.ofLocalizedDateTime(dateStyle, timeStyle);
-		else if (dateStyle == null)
+		} else if (dateStyle == null) {
 			return DateTimeFormatter.ofLocalizedTime(timeStyle);
-		else
+		} else {
 			return DateTimeFormatter.ofLocalizedDate(dateStyle);
+		}
 	}
 
 	/**
@@ -631,7 +638,7 @@ public class Util {
 	 * @param ch the one character style code
 	 * @return the FormatStyle
 	 */
-	private static FormatStyle selectStyle(char ch) throws JspException {
+	private static FormatStyle selectStyle(final char ch) throws JspException {
 		switch (ch) {
 		case 'S':
 			return SHORT;

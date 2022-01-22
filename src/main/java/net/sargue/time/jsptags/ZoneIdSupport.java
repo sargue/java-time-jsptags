@@ -36,102 +36,109 @@ import jakarta.servlet.jsp.tagext.Tag;
  */
 public abstract class ZoneIdSupport extends BodyTagSupport {
 
-    /** The config key for the time zone. */
-    public static final String FMT_TIME_ZONE = "net.sargue.time.zoneId";
+	private static final long serialVersionUID = 1L;
 
-    /** The value attribute. */
-    protected Object value;
+	/** The config key for the time zone. */
+	public static final String FMT_TIME_ZONE = "net.sargue.time.zoneId";
 
-    /** The zone. */
-    private ZoneId zoneId;
+	/** The value attribute. */
+	protected Object value;
 
-    /**
-     * Constructor.
-     */
-    public ZoneIdSupport() {
-        super();
-        init();
-    }
+	/** The zone. */
+	private ZoneId zoneId;
 
-    private void init() {
-        value = null;
-    }
+	/**
+	 * Constructor.
+	 */
+	public ZoneIdSupport() {
+		super();
+		init();
+	}
 
-    public ZoneId getZoneId() {
-        return zoneId;
-    }
+	private void init() {
+		value = null;
+	}
 
-    public int doStartTag() throws JspException {
-        if (value == null) {
-            zoneId = ZoneOffset.UTC;
-        } else if (value instanceof String) {
-            try {
-                zoneId = ZoneId.of((String) value);
-            } catch (IllegalArgumentException iae) {
-                zoneId = ZoneOffset.UTC;
-            }
-        } else {
-            zoneId = (ZoneId) value;
-        }
-        return EVAL_BODY_BUFFERED;
-    }
+	/**
+	 * 
+	 * @return the zone
+	 */
+	public ZoneId getZoneId() {
+		return zoneId;
+	}
 
-    public int doEndTag() throws JspException {
-        try {
-            pageContext.getOut().print(bodyContent.getString());
-        } catch (IOException ioe) {
-            throw new JspTagException(ioe.toString(), ioe);
-        }
-        return EVAL_PAGE;
-    }
+	public int doStartTag() throws JspException {
+		if (value == null) {
+			zoneId = ZoneOffset.UTC;
+		} else if (value instanceof String) {
+			try {
+				zoneId = ZoneId.of((String) value);
+			} catch (IllegalArgumentException iae) {
+				zoneId = ZoneOffset.UTC;
+			}
+		} else {
+			zoneId = (ZoneId) value;
+		}
+		return EVAL_BODY_BUFFERED;
+	}
 
-    // Releases any resources we may have (or inherit)
-    public void release() {
-        init();
-    }
+	public int doEndTag() throws JspException {
+		try {
+			pageContext.getOut().print(bodyContent.getString());
+		} catch (IOException ioe) {
+			throw new JspTagException(ioe.toString(), ioe);
+		}
+		return EVAL_PAGE;
+	}
 
-    /**
-     * Determines and returns the time zone to be used by the given action.
-     * <p>
-     * If the given action is nested inside a &lt;zoneId&gt; action,
-     * the time zone is taken from the enclosing &lt;zoneId&gt; action.
-     * <p>
-     * Otherwise, the time zone configuration setting
-     * <tt>net.sargue.time.jsptags.ZoneIdSupport.FMT_TIME_ZONE</tt> is used.
-     * 
-     * @param pc  the page containing the action for which the time zone
-     *  needs to be determined
-     * @param fromTag  the action for which the time zone needs to be determined
-     * 
-     * @return the time zone, or <tt> null </tt> if the given action is not
-     * nested inside a &lt;zoneId&gt; action and no time zone configuration
-     * setting exists
-     */
-    static ZoneId getZoneId(PageContext pc, Tag fromTag) {
-        ZoneId tz = null;
+	@Override
+	public void release() {
+		init();
+		super.release();
+	}
 
-        Tag t = findAncestorWithClass(fromTag, ZoneIdSupport.class);
-        if (t != null) {
-            // use time zone from parent <timeZone> tag
-            ZoneIdSupport parent = (ZoneIdSupport) t;
-            tz = parent.getZoneId();
-        } else {
-            // get time zone from configuration setting
-            Object obj = Config.find(pc, FMT_TIME_ZONE);
-            if (obj != null) {
-                if (obj instanceof ZoneId) {
-                    tz = (ZoneId) obj;
-                } else {
-                    try {
-                        tz = ZoneId.of((String) obj);
-                    } catch (IllegalArgumentException iae) {
-                        tz = ZoneOffset.UTC;
-                    }
-                }
-            }
-        }
+	/**
+	 * Determines and returns the time zone to be used by the given action.
+	 * <p>
+	 * If the given action is nested inside a &lt;zoneId&gt; action, the time zone
+	 * is taken from the enclosing &lt;zoneId&gt; action.
+	 * <p>
+	 * Otherwise, the time zone configuration setting
+	 * <tt>net.sargue.time.jsptags.ZoneIdSupport.FMT_TIME_ZONE</tt> is used.
+	 * 
+	 * @param pc      the page containing the action for which the time zone needs
+	 *                to be determined
+	 * @param fromTag the action for which the time zone needs to be determined
+	 * 
+	 * @return the time zone, or <tt> null </tt> if the given action is not nested
+	 *         inside a &lt;zoneId&gt; action and no time zone configuration setting
+	 *         exists
+	 */
+	static ZoneId getZoneId(final PageContext pc, final Tag fromTag) {
+		ZoneId tz = null;
 
-        return tz;
-    }
+		final Tag t = findAncestorWithClass(fromTag, ZoneIdSupport.class);
+		if (t != null) {
+			// use time zone from parent <timeZone> tag
+			final ZoneIdSupport parent = (ZoneIdSupport) t;
+			tz = parent.getZoneId();
+		} else {
+			// get time zone from configuration setting
+			final Object obj = Config.find(pc, FMT_TIME_ZONE);
+			if (obj != null) {
+				if (obj instanceof ZoneId) {
+					tz = (ZoneId) obj;
+				} else {
+					try {
+						tz = ZoneId.of((String) obj);
+					} catch (IllegalArgumentException iae) {
+						tz = ZoneOffset.UTC;
+					}
+				}
+			}
+		}
+
+		return tz;
+	}
 
 }

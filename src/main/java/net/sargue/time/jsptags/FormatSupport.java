@@ -13,7 +13,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */ 
+ */
 package net.sargue.time.jsptags;
 
 import java.io.IOException;
@@ -34,8 +34,8 @@ import jakarta.servlet.jsp.PageContext;
 import jakarta.servlet.jsp.tagext.TagSupport;
 
 /**
- * Support for tag handlers for &lt;formatDate&gt;, the date and time
- * formatting tag in JSTL 1.0.
+ * Support for tag handlers for &lt;formatDate&gt;, the date and time formatting
+ * tag in JSTL 1.0.
  *
  * @author Jan Luehe
  * @author Jim Newsham
@@ -43,125 +43,130 @@ import jakarta.servlet.jsp.tagext.TagSupport;
  */
 public abstract class FormatSupport extends TagSupport {
 
-    /** The value attribute. */
-    protected Object value;
-    /** The pattern attribute. */
-    protected String pattern;
-    /** The style attribute. */
-    protected String style;
-    /** The zoneId attribute. */
-    protected ZoneId zoneId;
-    /** The locale attribute. */
-    protected Locale locale;
-    /** The var attribute. */
-    private String var;
-    /** The scope attribute. */
-    private int scope;
+	private static final long serialVersionUID = 1L;
 
-    /**
-     * Constructor.
-     */
-    public FormatSupport() {
-        super();
-        init();
-    }
+	/** The value attribute. */
+	protected Object value;
+	/** The pattern attribute. */
+	protected String pattern;
+	/** The style attribute. */
+	protected String style;
+	/** The zoneId attribute. */
+	protected ZoneId zoneId;
+	/** The locale attribute. */
+	protected Locale locale;
+	/** The var attribute. */
+	private String var;
+	/** The scope attribute. */
+	private int scope;
 
-    private void init() {
-        var = null;
-        value = null;
-        pattern = null;
-        style = null;
-        zoneId = null;
-        locale = null;
-        scope = PageContext.PAGE_SCOPE;
-    }
+	/**
+	 * Constructor.
+	 */
+	public FormatSupport() {
+		super();
+		init();
+	}
 
-    @SuppressWarnings("UnusedDeclaration")
-    public void setVar(String var) {
-        this.var = var;
-    }
+	private void init() {
+		var = null;
+		value = null;
+		pattern = null;
+		style = null;
+		zoneId = null;
+		locale = null;
+		scope = PageContext.PAGE_SCOPE;
+	}
 
-    @SuppressWarnings("UnusedDeclaration")
-    public void setScope(String scope) {
-        this.scope = Util.getScope(scope);
-    }
+	/**
+	 * 
+	 * @param var the variable to store the result in
+	 */
+	public void setVar(final String var) {
+		this.var = var;
+	}
 
-    /*
-     * Formats the given instant or partial.
-     */
-    public int doEndTag() throws JspException {
-        if (value == null) {
-            if (var != null) {
-                pageContext.removeAttribute(var, scope);
-            }
-            return EVAL_PAGE;
-        }
+	/**
+	 * 
+	 * @param scope the scope to put the variable in
+	 * @see #setVar(String)
+	 */
+	public void setScope(final String scope) {
+		this.scope = Util.getScope(scope);
+	}
 
-        // Create formatter
-        DateTimeFormatter formatter;
-        if (pattern != null) {
-            formatter = DateTimeFormatter.ofPattern(pattern);
-        } else if (style != null) {
-            formatter = Util.createFormatterForStyle(style);
-        } else {
-            // use a medium date (no time) style by default; same as jstl
-            formatter = Util.createFormatterForStyle("M-");
-        }
+	/**
+	 * Formats the given instant or partial.
+	 */
+	public int doEndTag() throws JspException {
+		if (value == null) {
+			if (var != null) {
+				pageContext.removeAttribute(var, scope);
+			}
+			return EVAL_PAGE;
+		}
 
-        // set formatter locale
-        Locale locale = this.locale;
-        if (locale == null) {
-            locale = Util.getFormattingLocale(pageContext, true,
-                    DateFormat.getAvailableLocales());
-        }
-        if (locale != null) {
-            formatter = formatter.withLocale(locale);
-        }
+		// Create formatter
+		DateTimeFormatter formatter;
+		if (pattern != null) {
+			formatter = DateTimeFormatter.ofPattern(pattern);
+		} else if (style != null) {
+			formatter = Util.createFormatterForStyle(style);
+		} else {
+			// use a medium date (no time) style by default; same as jstl
+			formatter = Util.createFormatterForStyle("M-");
+		}
 
-        // set formatter timezone
-        ZoneId zoneId = this.zoneId;
-        if (zoneId == null) {
-            zoneId = ZoneIdSupport.getZoneId(pageContext, this);
-        }
-        if (zoneId != null) {
-            formatter = formatter.withZone(zoneId);
-        } else {
-            if (value instanceof Instant ||
-                value instanceof LocalDateTime ||
-                value instanceof OffsetDateTime ||
-                value instanceof OffsetTime ||
-                value instanceof LocalTime)
-                // these time objects may need a zone to resolve some patterns
-                // and/or styles, and as there is no zone we revert to the
-                // system default zone
-                formatter = formatter.withZone(ZoneId.systemDefault());
-        }
+		// set formatter locale
+		Locale locale = this.locale;
+		if (locale == null) {
+			locale = Util.getFormattingLocale(pageContext, true, DateFormat.getAvailableLocales());
+		}
+		if (locale != null) {
+			formatter = formatter.withLocale(locale);
+		}
 
-        // format value
-        String formatted;
-        if (value instanceof TemporalAccessor) {
-            formatted = formatter.format((TemporalAccessor) value);
-        } else {
-            throw new JspException(
-                "value attribute of format tag must be a TemporalAccessor," +
-                " was: " + value.getClass().getName()); 
-        }
+		// set formatter timezone
+		ZoneId zoneId = this.zoneId;
+		if (zoneId == null) {
+			zoneId = ZoneIdSupport.getZoneId(pageContext, this);
+		}
+		if (zoneId != null) {
+			formatter = formatter.withZone(zoneId);
+		} else {
+			if (value instanceof Instant || value instanceof LocalDateTime || value instanceof OffsetDateTime
+					|| value instanceof OffsetTime || value instanceof LocalTime)
+				// these time objects may need a zone to resolve some patterns
+				// and/or styles, and as there is no zone we revert to the
+				// system default zone
+				formatter = formatter.withZone(ZoneId.systemDefault());
+		}
 
-        if (var != null) {
-            pageContext.setAttribute(var, formatted, scope);
-        } else {
-            try {
-                pageContext.getOut().print(formatted);
-            } catch (IOException ioe) {
-                throw new JspTagException(ioe.toString(), ioe);
-            }
-        }
+		// format value
+		String formatted = null;
+		if (value instanceof TemporalAccessor) {
+			formatted = formatter.format((TemporalAccessor) value);
+		} else {
+			throw new JspException("value attribute of format tag must be a TemporalAccessor," + " was: "
+					+ value.getClass().getName());
+		}
 
-        return EVAL_PAGE;
-    }
+		if (var != null) {
+			pageContext.setAttribute(var, formatted, scope);
+		} else {
+			try {
+				pageContext.getOut().print(formatted);
+			} catch (IOException ioe) {
+				throw new JspTagException(ioe.toString(), ioe);
+			}
+		}
 
-    // Releases any resources we may have (or inherit)
-    public void release() {
-        init();
-    }
+		return EVAL_PAGE;
+	}
+
+	@Override
+	public void release() {
+		init();
+		super.release();
+	}
 }
