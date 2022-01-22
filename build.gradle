@@ -27,10 +27,6 @@ repositories {
     }    
 }
 
-configurations {
-    testCompile.extendsFrom compileOnly
-}
-
 dependencies {
     implementation(group: "jakarta.servlet", name: "jakarta.servlet-api", version: "5.0.0")
     implementation(group: "jakarta.servlet.jsp", name: "jakarta.servlet.jsp-api", version: "3.0.0")
