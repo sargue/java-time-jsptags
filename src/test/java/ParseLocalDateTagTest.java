@@ -2,14 +2,13 @@ import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
 import java.util.Locale;
 
-import javax.servlet.jsp.JspException;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.mock.web.MockPageContext;
 import org.springframework.mock.web.MockServletContext;
 
+import jakarta.servlet.jsp.JspException;
 import net.sargue.time.jsptags.ParseLocalDateTag;
 
 /**

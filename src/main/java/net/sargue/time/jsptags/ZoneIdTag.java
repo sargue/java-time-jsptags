@@ -16,7 +16,7 @@
  */
 package net.sargue.time.jsptags;
 
-import javax.servlet.jsp.JspTagException;
+import jakarta.servlet.jsp.JspTagException;
 
 /**
  * A handler for &lt;zoneId&gt;.

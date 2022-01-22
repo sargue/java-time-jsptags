@@ -19,7 +19,7 @@ package net.sargue.time.jsptags;
 import java.time.ZoneId;
 import java.util.Locale;
 
-import javax.servlet.jsp.JspTagException;
+import jakarta.servlet.jsp.JspTagException;
 
 /**
  * <p>

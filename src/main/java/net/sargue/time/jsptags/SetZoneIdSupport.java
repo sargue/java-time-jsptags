@@ -16,12 +16,13 @@
  */
 package net.sargue.time.jsptags;
 
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.PageContext;
-import javax.servlet.jsp.jstl.core.Config;
-import javax.servlet.jsp.tagext.TagSupport;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
+
+import jakarta.servlet.jsp.JspException;
+import jakarta.servlet.jsp.PageContext;
+import jakarta.servlet.jsp.jstl.core.Config;
+import jakarta.servlet.jsp.tagext.TagSupport;
 
 /**
  * Support for tag handlers for &lt;setDateTimeZone&gt;.

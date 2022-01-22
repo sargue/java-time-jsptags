@@ -16,8 +16,6 @@
  */
 package net.sargue.time.jsptags;
 
-import javax.servlet.jsp.JspTagException;
-
 /**
  * <p>
  * A handler for &lt;setDateTimeZone&gt; that supports rtexprvalue-based

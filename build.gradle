@@ -2,19 +2,29 @@ plugins {
     id "com.jfrog.bintray" version "1.7.3"
     id "java"
     id "eclipse"
+    id "com.github.ben-manes.versions" version "0.41.0" // adds dependencyUpdates task   
 }
 
 group = 'net.sargue'
 archivesBaseName = 'java-time-jsptags'
 version = '1.1.4'
 
-sourceCompatibility = 1.8
 compileJava.options.encoding = 'UTF-8'
 compileTestJava.options.encoding = 'UTF-8'
+
+java {
+    // set version of Java that the source confirms to. 
+    // The bytecode will be for this version of Java as well, unless targetCompatibility is specified.
+    sourceCompatibility = JavaVersion.VERSION_17
+}
 
 repositories {
     mavenLocal()
     mavenCentral()
+    // for snapshot release of spring that includes jakarta classes
+    maven {
+      url "https://repo.spring.io/milestone"
+    }    
 }
 
 configurations {
@@ -22,13 +32,13 @@ configurations {
 }
 
 dependencies {
-    implementation(group: "javax.servlet", name: "javax.servlet-api", version: "4.0.1")
-    implementation(group: "javax.servlet.jsp", name: "javax.servlet.jsp-api", version: "2.3.3")
-    implementation(group: "javax.servlet.jsp.jstl", name: "javax.servlet.jsp.jstl-api", version: "1.2.2")
+    implementation(group: "jakarta.servlet", name: "jakarta.servlet-api", version: "5.0.0")
+    implementation(group: "jakarta.servlet.jsp", name: "jakarta.servlet.jsp-api", version: "3.0.0")
+    implementation(group: "jakarta.servlet.jsp.jstl", name: "jakarta.servlet.jsp.jstl-api", version: "2.0.0")
     
 
     testImplementation(group: "junit", name: "junit", version: "4.12")
-    testImplementation(group: "org.springframework", name: "spring-test", version: "4.1.7.RELEASE")
+    testImplementation(group: "org.springframework", name: "spring-test", version: "6.0.0-M2")
 }
 
 jar {
