@@ -7,7 +7,7 @@ plugins {
 
 group = 'net.sargue'
 archivesBaseName = 'java-time-jsptags'
-version = '1.1.4'
+version = '2.0.0'
 
 compileJava.options.encoding = 'UTF-8'
 compileTestJava.options.encoding = 'UTF-8'
