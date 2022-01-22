@@ -17,6 +17,9 @@ import java.time.Year;
 import java.time.YearMonth;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
+import java.time.temporal.WeekFields;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -46,35 +49,57 @@ public class FormatTagTest {
 
 	@Test
 	public void dayOfWeekTest() throws IOException, JspException {
-		assertEquals("dl. dl. dl. dilluns 1 01 dl. dilluns",
+		// find the first day of the week for the locale
+		final Locale l = Locale.getDefault();
+		final DayOfWeek firstDayOfWeek = WeekFields.of(l).getFirstDayOfWeek();
+		final LocalDate firstDayOfWeekLd = LocalDate.now().with(firstDayOfWeek);
+
+		// Find the Monday after the first day of the week
+		LocalDate mondayLd = firstDayOfWeekLd.with(DayOfWeek.MONDAY);
+		if (mondayLd.isBefore(firstDayOfWeekLd)) {
+			mondayLd = mondayLd.plusDays(7);
+		}
+
+		// the localized day of week (format specifier 'e') is 1 on the first day of the
+		// week and 2 on the second day of the week for the locale
+		final long mondayNumeric = firstDayOfWeekLd.until(mondayLd, ChronoUnit.DAYS) + 1;
+		assertEquals(String.format("dl. dl. dl. dilluns %1$d %1$02d dl. dilluns", mondayNumeric),
 				format(DayOfWeek.MONDAY, "E EE EEE EEEE e ee eee eeee", null));
-		assertEquals("dt. dt. dt. dimarts 2 02 dt. dimarts",
+
+		final LocalDate tuesdayLd = mondayLd.plusDays(1);
+		final long tuesdayNumeric = firstDayOfWeekLd.until(tuesdayLd, ChronoUnit.DAYS) + 1;
+		assertEquals(String.format("dt. dt. dt. dimarts %1$d %1$02d dt. dimarts", tuesdayNumeric),
 				format(DayOfWeek.TUESDAY, "E EE EEE EEEE e ee eee eeee", null));
 	}
 
 	@Test
 	public void instantTest() throws JspException, IOException {
 		Instant instant = Instant.parse("2015-11-06T09:45:33.652Z");
-		assertEquals("06/11/2015", format(instant, null, null));
-		assertEquals("06/11/15", format(instant, null, "S-"));
-		assertEquals("06/11/2015", format(instant, null, "M-"));
-		assertEquals("6 / de novembre / 2015", format(instant, null, "L-"));
-		assertEquals("divendres, 6 / de novembre / 2015", format(instant, null, "F-"));
+		assertEquals("6/11/15", format(instant, null, "S-"));
+		assertEquals("6 de nov. 2015", format(instant, null, "M-"));
+		// check default matches medium
+		assertEquals(format(instant, null, "M-"), format(instant, null, null));
+
+		assertEquals("6 de novembre de 2015", format(instant, null, "L-"));
+		assertEquals("divendres, 6 de novembre de 2015", format(instant, null, "F-"));
 		assertEquals("10:45", format(instant, null, "-S"));
 		assertEquals("10:45:33", format(instant, null, "-M"));
 		assertEquals("10:45:33 CET", format(instant, null, "-L"));
-		assertEquals("10:45:33 CET", format(instant, null, "-F"));
+		assertEquals("10:45:33 (Hora estàndard del Centre d’Europa)", format(instant, null, "-F"));
 	}
 
 	@Test
 	public void localDateTest() throws IOException, JspException {
 		LocalDate localDate = LocalDate.parse("2015-11-06");
-		assertEquals("06/11/2015", format(localDate, null, null));
 		assertEquals("06/11/2015", format(localDate, "dd/MM/yyyy", null));
-		assertEquals("06/11/15", format(localDate, null, "S-"));
-		assertEquals("06/11/2015", format(localDate, null, "M-"));
-		assertEquals("6 / de novembre / 2015", format(localDate, null, "L-"));
-		assertEquals("divendres, 6 / de novembre / 2015", format(localDate, null, "F-"));
+		assertEquals("6/11/15", format(localDate, null, "S-"));
+		assertEquals("6 de nov. 2015", format(localDate, null, "M-"));
+
+		// check that default matches medium
+		assertEquals(format(localDate, null, "M-"), format(localDate, null, null));
+
+		assertEquals("6 de novembre de 2015", format(localDate, null, "L-"));
+		assertEquals("divendres, 6 de novembre de 2015", format(localDate, null, "F-"));
 	}
 
 	@Test
