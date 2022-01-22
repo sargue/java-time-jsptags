@@ -91,15 +91,17 @@ public class FormatTagTest {
 	public void localDateTimeTest() throws IOException, JspException {
 		LocalDateTime localDateTime = LocalDateTime.parse("2015-11-06T10:55:53.456");
 		assertEquals("06/11/2015 10:55:53", format(localDateTime, "dd/MM/yyyy HH:mm:ss", null));
-		assertEquals("06/11/2015", format(localDateTime, null, null));
-		assertEquals("06/11/15", format(localDateTime, null, "S-"));
-		assertEquals("06/11/2015", format(localDateTime, null, "M-"));
-		assertEquals("6 / de novembre / 2015", format(localDateTime, null, "L-"));
-		assertEquals("divendres, 6 / de novembre / 2015", format(localDateTime, null, "F-"));
+		assertEquals("6/11/15", format(localDateTime, null, "S-"));
+		assertEquals("6 de nov. 2015", format(localDateTime, null, "M-"));
+		// check default matches medium
+		assertEquals(format(localDateTime, null, "M-"), format(localDateTime, null, null));
+
+		assertEquals("6 de novembre de 2015", format(localDateTime, null, "L-"));
+		assertEquals("divendres, 6 de novembre de 2015", format(localDateTime, null, "F-"));
 		assertEquals("10:55", format(localDateTime, null, "-S"));
 		assertEquals("10:55:53", format(localDateTime, null, "-M"));
 		assertEquals("10:55:53 CET", format(localDateTime, null, "-L"));
-		assertEquals("10:55:53 CET", format(localDateTime, null, "-F"));
+		assertEquals("10:55:53 (Hora estàndard del Centre d’Europa)", format(localDateTime, null, "-F"));
 	}
 
 	@Test
@@ -116,15 +118,17 @@ public class FormatTagTest {
 	@Test
 	public void offsetDateTimeTest() throws IOException, JspException {
 		OffsetDateTime offsetDateTime = OffsetDateTime.parse("2015-11-06T10:58:21.207+01:00");
-		assertEquals("06/11/2015", format(offsetDateTime, null, null));
-		assertEquals("06/11/15", format(offsetDateTime, null, "S-"));
-		assertEquals("06/11/2015", format(offsetDateTime, null, "M-"));
-		assertEquals("6 / de novembre / 2015", format(offsetDateTime, null, "L-"));
-		assertEquals("divendres, 6 / de novembre / 2015", format(offsetDateTime, null, "F-"));
+		assertEquals("6/11/15", format(offsetDateTime, null, "S-"));
+		assertEquals("6 de nov. 2015", format(offsetDateTime, null, "M-"));
+		// check that default matches medium
+		assertEquals(format(offsetDateTime, null, "M-"), format(offsetDateTime, null, null));
+
+		assertEquals("6 de novembre de 2015", format(offsetDateTime, null, "L-"));
+		assertEquals("divendres, 6 de novembre de 2015", format(offsetDateTime, null, "F-"));
 		assertEquals("10:58", format(offsetDateTime, null, "-S"));
 		assertEquals("10:58:21", format(offsetDateTime, null, "-M"));
 		assertEquals("10:58:21 CET", format(offsetDateTime, null, "-L"));
-		assertEquals("10:58:21 CET", format(offsetDateTime, null, "-F"));
+		assertEquals("10:58:21 (Hora estàndard del Centre d’Europa)", format(offsetDateTime, null, "-F"));
 	}
 
 	@Test
@@ -153,27 +157,29 @@ public class FormatTagTest {
 	@Test
 	public void zonedDateTime() throws IOException, JspException {
 		ZonedDateTime zonedDateTime = ZonedDateTime.parse("2015-11-06T11:04:47.409+01:00[Europe/Paris]");
-		assertEquals("06/11/2015", format(zonedDateTime, null, null));
-		assertEquals("06/11/15", format(zonedDateTime, null, "S-"));
-		assertEquals("06/11/2015", format(zonedDateTime, null, "M-"));
-		assertEquals("6 / de novembre / 2015", format(zonedDateTime, null, "L-"));
-		assertEquals("divendres, 6 / de novembre / 2015", format(zonedDateTime, null, "F-"));
+		assertEquals("6 de nov. 2015", format(zonedDateTime, null, null));
+		assertEquals("6/11/15", format(zonedDateTime, null, "S-"));
+		assertEquals("6 de nov. 2015", format(zonedDateTime, null, "M-"));
+		assertEquals("6 de novembre de 2015", format(zonedDateTime, null, "L-"));
+		assertEquals("divendres, 6 de novembre de 2015", format(zonedDateTime, null, "F-"));
 		assertEquals("11:04", format(zonedDateTime, null, "-S"));
 		assertEquals("11:04:47", format(zonedDateTime, null, "-M"));
 		assertEquals("11:04:47 CET", format(zonedDateTime, null, "-L"));
-		assertEquals("11:04:47 CET", format(zonedDateTime, null, "-F"));
+		assertEquals("11:04:47 (Hora estàndard del Centre d’Europa)", format(zonedDateTime, null, "-F"));
 
 		ZonedDateTime pstZonedDateTime = zonedDateTime.withZoneSameInstant(ZoneId.of("America/Los_Angeles"));
 		System.out.println(pstZonedDateTime);
-		assertEquals("06/11/2015", format(pstZonedDateTime, null, null));
-		assertEquals("06/11/15", format(pstZonedDateTime, null, "S-"));
-		assertEquals("06/11/2015", format(pstZonedDateTime, null, "M-"));
-		assertEquals("6 / de novembre / 2015", format(pstZonedDateTime, null, "L-"));
-		assertEquals("divendres, 6 / de novembre / 2015", format(pstZonedDateTime, null, "F-"));
-		assertEquals("02:04", format(pstZonedDateTime, null, "-S"));
-		assertEquals("02:04:47", format(pstZonedDateTime, null, "-M"));
-		assertEquals("02:04:47 PST", format(pstZonedDateTime, null, "-L"));
-		assertEquals("02:04:47 PST", format(pstZonedDateTime, null, "-F"));
+		assertEquals("6/11/15", format(pstZonedDateTime, null, "S-"));
+		assertEquals("6 de nov. 2015", format(pstZonedDateTime, null, "M-"));
+		// check that default matches medium
+		assertEquals(format(pstZonedDateTime, null, "M-"), format(pstZonedDateTime, null, null));
+
+		assertEquals("6 de novembre de 2015", format(pstZonedDateTime, null, "L-"));
+		assertEquals("divendres, 6 de novembre de 2015", format(pstZonedDateTime, null, "F-"));
+		assertEquals("2:04", format(pstZonedDateTime, null, "-S"));
+		assertEquals("2:04:47", format(pstZonedDateTime, null, "-M"));
+		assertEquals("2:04:47 PST", format(pstZonedDateTime, null, "-L"));
+		assertEquals("2:04:47 (Hora estàndard del Pacífic d’Amèrica del Nord)", format(pstZonedDateTime, null, "-F"));
 	}
 
 	private String format(Object o, String pattern, String style) throws JspException, IOException {
