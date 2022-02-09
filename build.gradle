@@ -1,8 +1,6 @@
 plugins {
     id "com.jfrog.bintray" version "1.7.3"
     id "java"
-    id "eclipse"
-    id "com.github.ben-manes.versions" version "0.41.0" // adds dependencyUpdates task
     id "maven-publish"
 }
 
@@ -107,18 +105,6 @@ bintray {
                 sign = true
                 passphrase = project.hasProperty('BINTRAY_GPG') ? BINTRAY_GPG : ''
             }
-        }
-    }
-}
-
-eclipse {
-    classpath {
-        file {
-            // remove entries added due to issue with testsets                                                                      
-            // https://github.com/unbroken-dome/gradle-testsets-plugin/issues/77                                                    
-            whenMerged {                                                                                                            
-                entries.removeAll{it.kind == "lib" && (it.path.endsWith("build/classes/java/test") || it.path.endsWith("build/resources/test"))}
-            }                                                                                                                       
         }
     }
 }
