@@ -59,3 +59,4 @@ crashlytics-build.properties
 # eclipse
 bin/
 .classpath
+.project
