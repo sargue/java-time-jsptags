@@ -20,6 +20,18 @@ The library is pretty stable right now. Should you have any problem
 please file an issue. There is no planned development for this library,
 just bugfix maintenance.
 
+Regarding v2.x and the Java EE to Jakarta EE package name migration
+----------------------------------------------------------------------
+
+**TL;DR Use only v2.x of the library if you are migrating your project to the new 
+Jakarta EE 9 or higher with the new package names.**
+
+Version 2.0.0 switches to the new Jakarta EE package naming. No other changes 
+are introduced but a major version is used as it will break compilation
+of existing code. Thanks to [Jon Schewe](https://github.com/jpschewe) for [the 
+contribution](https://github.com/sargue/java-time-jsptags/pull/11) that made this possible.
+
+
 About
 -----
 
@@ -260,7 +272,7 @@ a `zoneId` attribute and is not nested within a `<javatime:zoneId/>` tag.
 Build
 =====
 
-Build is based on gradle. See build.gradle included in the repository.
+Build is based on gradle. See `build.gradle` included in the repository.
 
 Changelog
 ---------
@@ -268,6 +280,7 @@ Changelog
 ### v2.0.0
 
 Updated for jakarta package names for J2EE classes.
+
 Requires Java 17 now due to dependency on spring-test 6.0.
 
 ### v1.1.4
