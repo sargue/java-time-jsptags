@@ -238,7 +238,6 @@ public abstract class ParseSupport extends BodyTagSupport {
         // Releases any resources we may have (or inherit)
         public void release() {
                 init();
-                super.release();
         }
 
 }

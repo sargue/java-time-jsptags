@@ -94,7 +94,6 @@ public abstract class SetZoneIdSupport extends TagSupport {
 	// Releases any resources we may have (or inherit)
 	public void release() {
 		init();
-		super.release();
 	}
 
 }
