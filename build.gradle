@@ -18,7 +18,6 @@ java {
 }
 
 repositories {
-    mavenLocal()
     mavenCentral()
     // for snapshot release of spring that includes jakarta classes
     maven {
