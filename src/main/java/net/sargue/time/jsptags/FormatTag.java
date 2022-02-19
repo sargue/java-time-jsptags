@@ -16,10 +16,10 @@
  */
 package net.sargue.time.jsptags;
 
+import jakarta.servlet.jsp.JspTagException;
+
 import java.time.ZoneId;
 import java.util.Locale;
-
-import jakarta.servlet.jsp.JspTagException;
 
 /**
  * <p>
@@ -30,7 +30,8 @@ import jakarta.servlet.jsp.JspTagException;
  * @author Jim Newsham
  * @author Sergi Baila
  */
-public class FormatTag extends FormatSupport {
+ @SuppressWarnings("UnusedDeclaration")
+ public class FormatTag extends FormatSupport {
 
 	private static final long serialVersionUID = 1L;
 
@@ -39,7 +40,7 @@ public class FormatTag extends FormatSupport {
 	 *
 	 * @param value the value
 	 */
-	public void setValue(final Object value) {
+	public void setValue(Object value) {
 		this.value = value;
 	}
 
@@ -48,7 +49,7 @@ public class FormatTag extends FormatSupport {
 	 *
 	 * @param style the style
 	 */
-	public void setStyle(final String style) {
+	public void setStyle(String style) {
 		this.style = style;
 	}
 
@@ -57,7 +58,7 @@ public class FormatTag extends FormatSupport {
 	 *
 	 * @param pattern the pattern
 	 */
-	public void setPattern(final String pattern) {
+	public void setPattern(String pattern) {
 		this.pattern = pattern;
 	}
 
@@ -67,7 +68,7 @@ public class FormatTag extends FormatSupport {
 	 * @param dtz the zone
 	 * @throws JspTagException incorrect zone or dtz parameter
 	 */
-	public void setZoneId(final Object dtz) throws JspTagException {
+	public void setZoneId(Object dtz) throws JspTagException {
 		if (dtz == null || (dtz instanceof String && ((String) dtz).isEmpty())) {
 			this.zoneId = null;
 		} else if (dtz instanceof ZoneId) {
@@ -75,7 +76,7 @@ public class FormatTag extends FormatSupport {
 		} else if (dtz instanceof String) {
 			try {
 				this.zoneId = ZoneId.of((String) dtz);
-			} catch (final IllegalArgumentException iae) {
+			} catch (IllegalArgumentException iae) {
 				throw new JspTagException("Incorrect Zone: " + dtz);
 			}
 		} else
@@ -88,7 +89,7 @@ public class FormatTag extends FormatSupport {
 	 * @param loc the locale
 	 * @throws JspTagException parameter not a Locale or String
 	 */
-	public void setLocale(final Object loc) throws JspTagException {
+	public void setLocale(Object loc) throws JspTagException {
 		if (loc == null) {
 			this.locale = null;
 		} else if (loc instanceof Locale) {

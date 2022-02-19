@@ -18,12 +18,7 @@ package net.sargue.time.jsptags;
 
 import java.io.IOException;
 import java.text.DateFormat;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.OffsetDateTime;
-import java.time.OffsetTime;
-import java.time.ZoneId;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
 import java.util.Locale;
@@ -34,8 +29,8 @@ import jakarta.servlet.jsp.PageContext;
 import jakarta.servlet.jsp.tagext.TagSupport;
 
 /**
- * Support for tag handlers for &lt;formatDate&gt;, the date and time formatting
- * tag in JSTL 1.0.
+ * Support for tag handlers for &lt;formatDate&gt;, the date and time
+ * formatting tag in JSTL 1.0.
  *
  * @author Jan Luehe
  * @author Jim Newsham
@@ -78,20 +73,13 @@ public abstract class FormatSupport extends TagSupport {
 		scope = PageContext.PAGE_SCOPE;
 	}
 
-	/**
-	 * 
-	 * @param var the variable to store the result in
-	 */
-	public void setVar(final String var) {
+        @SuppressWarnings("UnusedDeclaration")  
+	public void setVar(String var) {
 		this.var = var;
 	}
 
-	/**
-	 * 
-	 * @param scope the scope to put the variable in
-	 * @see #setVar(String)
-	 */
-	public void setScope(final String scope) {
+        @SuppressWarnings("UnusedDeclaration")
+	public void setScope(String scope) {
 		this.scope = Util.getScope(scope);
 	}
 
@@ -120,7 +108,8 @@ public abstract class FormatSupport extends TagSupport {
 		// set formatter locale
 		Locale locale = this.locale;
 		if (locale == null) {
-			locale = Util.getFormattingLocale(pageContext, true, DateFormat.getAvailableLocales());
+			locale = Util.getFormattingLocale(pageContext, true,
+                                DateFormat.getAvailableLocales());
 		}
 		if (locale != null) {
 			formatter = formatter.withLocale(locale);
@@ -134,8 +123,11 @@ public abstract class FormatSupport extends TagSupport {
 		if (zoneId != null) {
 			formatter = formatter.withZone(zoneId);
 		} else {
-			if (value instanceof Instant || value instanceof LocalDateTime || value instanceof OffsetDateTime
-					|| value instanceof OffsetTime || value instanceof LocalTime)
+			if (value instanceof Instant ||
+                            value instanceof LocalDateTime ||
+                            value instanceof OffsetDateTime ||
+                            value instanceof OffsetTime ||
+                            value instanceof LocalTime)
 				// these time objects may need a zone to resolve some patterns
 				// and/or styles, and as there is no zone we revert to the
 				// system default zone
@@ -143,12 +135,13 @@ public abstract class FormatSupport extends TagSupport {
 		}
 
 		// format value
-		String formatted = null;
+		String formatted;
 		if (value instanceof TemporalAccessor) {
 			formatted = formatter.format((TemporalAccessor) value);
 		} else {
-			throw new JspException("value attribute of format tag must be a TemporalAccessor," + " was: "
-					+ value.getClass().getName());
+			throw new JspException(
+                            "value attribute of format tag must be a TemporalAccessor," +
+                            " was: " + value.getClass().getName());
 		}
 
 		if (var != null) {
@@ -164,7 +157,7 @@ public abstract class FormatSupport extends TagSupport {
 		return EVAL_PAGE;
 	}
 
-	@Override
+	// Releases any resources we may have (or inherit)
 	public void release() {
 		init();
 		super.release();

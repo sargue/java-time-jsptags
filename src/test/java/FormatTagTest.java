@@ -1,33 +1,23 @@
-package net.sargue.time.jsptags;
-
 import static org.junit.Assert.assertEquals;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.time.DayOfWeek;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.Month;
-import java.time.MonthDay;
-import java.time.OffsetDateTime;
-import java.time.OffsetTime;
-import java.time.Year;
-import java.time.YearMonth;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.WeekFields;
-import java.util.Locale;
-import java.util.TimeZone;
 
+import net.sargue.time.jsptags.FormatTag;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.mock.web.MockPageContext;
 import org.springframework.mock.web.MockServletContext;
 
 import jakarta.servlet.jsp.JspException;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.time.*;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.WeekFields;
+import java.util.Locale;
+import java.util.TimeZone;
+
+import static org.junit.Assert.assertEquals;
+
 
 /**
  * Basic format tests.

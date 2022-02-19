@@ -22,8 +22,7 @@ import java.time.temporal.TemporalQuery;
 
 /**
  * <p>
- * A handler for &lt;parseInstant&gt; that supports rtexprvalue-based
- * attributes.
+ * A handler for &lt;parseInstant&gt; that supports rtexprvalue-based attributes.
  * </p>
  * 
  * @author Jan Luehe

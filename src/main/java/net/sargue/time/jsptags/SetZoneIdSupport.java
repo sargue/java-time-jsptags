@@ -16,13 +16,13 @@
  */
 package net.sargue.time.jsptags;
 
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-
 import jakarta.servlet.jsp.JspException;
 import jakarta.servlet.jsp.PageContext;
 import jakarta.servlet.jsp.jstl.core.Config;
 import jakarta.servlet.jsp.tagext.TagSupport;
+
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 
 /**
  * Support for tag handlers for &lt;setDateTimeZone&gt;.
@@ -62,7 +62,8 @@ public abstract class SetZoneIdSupport extends TagSupport {
 	 * @param scope the scope to store the variable in
 	 * @see #setVar(String)
 	 */
-	public void setScope(final String scope) {
+        @SuppressWarnings("UnusedDeclaration")
+	public void setScope(String scope) {
 		this.scope = Util.getScope(scope);
 	}
 
@@ -70,7 +71,8 @@ public abstract class SetZoneIdSupport extends TagSupport {
 	 * 
 	 * @param var the variable to store the result in
 	 */
-	public void setVar(final String var) {
+        @SuppressWarnings("UnusedDeclaration")
+	public void setVar(String var) {
 		this.var = var;
 	}
 
@@ -91,13 +93,14 @@ public abstract class SetZoneIdSupport extends TagSupport {
 		if (var != null) {
 			pageContext.setAttribute(var, dateTimeZone, scope);
 		} else {
-			Config.set(pageContext, ZoneIdSupport.FMT_TIME_ZONE, dateTimeZone, scope);
+		   Config.set(pageContext, ZoneIdSupport.FMT_TIME_ZONE,
+                           dateTimeZone, scope);
 		}
 
 		return EVAL_PAGE;
 	}
 
-	@Override
+	// Releases any resources we may have (or inherit)
 	public void release() {
 		init();
 		super.release();

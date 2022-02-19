@@ -26,10 +26,8 @@ public class ZoneIdTag extends ZoneIdSupport {
 
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * @param value for tag attribute
-	 */
-	public void setValue(final Object value) {
+        // for tag attribute
+	public void setValue(Object value) {
 		this.value = value;
 	}
 

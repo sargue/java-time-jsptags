@@ -17,6 +17,7 @@
 package net.sargue.time.jsptags;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.TemporalAccessor;
 import java.time.temporal.TemporalQuery;
 

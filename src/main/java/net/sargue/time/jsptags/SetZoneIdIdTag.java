@@ -34,7 +34,7 @@ public class SetZoneIdIdTag extends SetZoneIdSupport {
 	 * 
 	 * @param value the value
 	 */
-	public void setValue(final Object value) {
+	public void setValue(Object value) {
 		this.value = value;
 	}
 
