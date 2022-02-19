@@ -16,10 +16,11 @@
  */
 package net.sargue.time.jsptags;
 
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.PageContext;
-import javax.servlet.jsp.jstl.core.Config;
-import javax.servlet.jsp.tagext.TagSupport;
+import jakarta.servlet.jsp.JspException;
+import jakarta.servlet.jsp.PageContext;
+import jakarta.servlet.jsp.jstl.core.Config;
+import jakarta.servlet.jsp.tagext.TagSupport;
+
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 
@@ -32,65 +33,67 @@ import java.time.ZoneOffset;
  */
 public abstract class SetZoneIdSupport extends TagSupport {
 
-    /** The value attribute. */
-    protected Object value;
-    /** The scope attribute. */
-    private int scope;
-    /** The var attribute. */
-    private String var;
+	private static final long serialVersionUID = 1L;
 
-    /**
-     * Constructor.
-     */
-    public SetZoneIdSupport() {
-        super();
-        init();
-    }
+	/** The value attribute. */
+	protected Object value;
+	/** The scope attribute. */
+	private int scope;
+	/** The var attribute. */
+	private String var;
 
-    // resets local state
-    private void init() {
-        value = null;
-        var = null;
-        scope = PageContext.PAGE_SCOPE;
-    }
+	/**
+	 * Constructor.
+	 */
+	public SetZoneIdSupport() {
+		super();
+		init();
+	}
 
-    @SuppressWarnings("UnusedDeclaration")
-    public void setScope(String scope) {
-        this.scope = Util.getScope(scope);
-    }
+	// resets local state
+	private void init() {
+		value = null;
+		var = null;
+		scope = PageContext.PAGE_SCOPE;
+	}
 
-    @SuppressWarnings("UnusedDeclaration")
-    public void setVar(String var) {
-        this.var = var;
-    }
+        @SuppressWarnings("UnusedDeclaration")
+	public void setScope(String scope) {
+		this.scope = Util.getScope(scope);
+	}
 
-    public int doEndTag() throws JspException {
-        ZoneId dateTimeZone;
-        if (value == null) {
-            dateTimeZone = ZoneOffset.UTC;
-        } else if (value instanceof String) {
-            try {
-                dateTimeZone = ZoneId.of((String) value);
-            } catch (IllegalArgumentException iae) {
-                dateTimeZone = ZoneOffset.UTC;
-            }
-        } else {
-            dateTimeZone = (ZoneId) value;
-        }
+        @SuppressWarnings("UnusedDeclaration")
+	public void setVar(String var) {
+		this.var = var;
+	}
 
-        if (var != null) {
-            pageContext.setAttribute(var, dateTimeZone, scope);
-        } else {
-            Config.set(pageContext, ZoneIdSupport.FMT_TIME_ZONE,
-                    dateTimeZone, scope);
-        }
+	public int doEndTag() throws JspException {
+		ZoneId dateTimeZone;
+		if (value == null) {
+			dateTimeZone = ZoneOffset.UTC;
+		} else if (value instanceof String) {
+			try {
+				dateTimeZone = ZoneId.of((String) value);
+			} catch (IllegalArgumentException iae) {
+				dateTimeZone = ZoneOffset.UTC;
+			}
+		} else {
+			dateTimeZone = (ZoneId) value;
+		}
 
-        return EVAL_PAGE;
-    }
+		if (var != null) {
+			pageContext.setAttribute(var, dateTimeZone, scope);
+		} else {
+		   Config.set(pageContext, ZoneIdSupport.FMT_TIME_ZONE,
+                           dateTimeZone, scope);
+		}
 
-    // Releases any resources we may have (or inherit)
-    public void release() {
-        init();
-    }
+		return EVAL_PAGE;
+	}
+
+	// Releases any resources we may have (or inherit)
+	public void release() {
+		init();
+	}
 
 }

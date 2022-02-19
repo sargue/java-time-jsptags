@@ -1,33 +1,38 @@
 plugins {
     id "com.jfrog.bintray" version "1.7.3"
+    id "java"
+    id "maven-publish"
 }
-
-apply plugin: 'java'
-apply plugin: 'maven'
 
 group = 'net.sargue'
 archivesBaseName = 'java-time-jsptags'
-version = '1.1.4'
+version = '2.0.0'
 
-sourceCompatibility = 1.8
 compileJava.options.encoding = 'UTF-8'
 compileTestJava.options.encoding = 'UTF-8'
 
-repositories {
-    jcenter()
+java {
+    // set version of Java that the source confirms to. 
+    // The bytecode will be for this version of Java as well, unless targetCompatibility is specified.
+    sourceCompatibility = JavaVersion.VERSION_17
 }
 
-configurations {
-    testCompile.extendsFrom compileOnly
+repositories {
+    mavenCentral()
+    // for snapshot release of spring that includes jakarta classes
+    maven {
+      url "https://repo.spring.io/milestone"
+    }    
 }
 
 dependencies {
-    compileOnly 'javax.servlet:javax.servlet-api:3.0.1'
-    compileOnly 'javax.servlet.jsp:javax.servlet.jsp-api:2.2.1'
-    compileOnly 'javax.servlet.jsp.jstl:javax.servlet.jsp.jstl-api:1.2.1'
+    implementation(group: "jakarta.servlet", name: "jakarta.servlet-api", version: "5.0.0")
+    implementation(group: "jakarta.servlet.jsp", name: "jakarta.servlet.jsp-api", version: "3.0.0")
+    implementation(group: "jakarta.servlet.jsp.jstl", name: "jakarta.servlet.jsp.jstl-api", version: "2.0.0")
+    
 
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.springframework:spring-test:4.1.7.RELEASE'
+    testImplementation(group: "junit", name: "junit", version: "4.12")
+    testImplementation(group: "org.springframework", name: "spring-test", version: "6.0.0-M2")
 }
 
 jar {
@@ -51,36 +56,36 @@ artifacts {
     archives javadocJar, sourcesJar
 }
 
-install {
-    repositories.mavenInstaller {
-        pom.project {
-            name 'Java 8 java.time JSP tags'
-            description 'JSP tag support for Java 8 java.time (JSR-310)'
-            url 'https://github.com/sargue/java-time-jsptags'
-
-            scm {
-                connection 'scm:git:git@github.com:sargue/java-time-jsptags.git'
-                developerConnection 'scm:git:git@github.com:sargue/java-time-jsptags.git'
-                url 'git@github.com:sargue/java-time-jsptags.git'
-            }
-
-            licenses {
-                license {
-                    name 'The Apache License, Version 2.0'
-                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                }
-            }
-
-            developers {
-                developer {
-                    id 'sargue'
-                    name 'Sergi Baila'
-                    email 'sargue@gmail.com'
-                }
-            }
-        }
-    }
-}
+// install {
+//     repositories.mavenInstaller {
+//         pom.project {
+//             name 'Java 8 java.time JSP tags'
+//             description 'JSP tag support for Java 8 java.time (JSR-310)'
+//             url 'https://github.com/sargue/java-time-jsptags'
+// 
+//             scm {
+//                 connection 'scm:git:git@github.com:sargue/java-time-jsptags.git'
+//                 developerConnection 'scm:git:git@github.com:sargue/java-time-jsptags.git'
+//                 url 'git@github.com:sargue/java-time-jsptags.git'
+//             }
+// 
+//             licenses {
+//                 license {
+//                     name 'The Apache License, Version 2.0'
+//                     url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+//                 }
+//             }
+// 
+//             developers {
+//                 developer {
+//                     id 'sargue'
+//                     name 'Sergi Baila'
+//                     email 'sargue@gmail.com'
+//                 }
+//             }
+//         }
+//     }
+// }
 
 bintray {
     user = project.hasProperty('BINTRAY_USER') ? BINTRAY_USER : ''

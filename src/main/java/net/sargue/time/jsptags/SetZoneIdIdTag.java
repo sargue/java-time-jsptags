@@ -16,8 +16,6 @@
  */
 package net.sargue.time.jsptags;
 
-import javax.servlet.jsp.JspTagException;
-
 /**
  * <p>
  * A handler for &lt;setDateTimeZone&gt; that supports rtexprvalue-based
@@ -29,13 +27,15 @@ import javax.servlet.jsp.JspTagException;
  */
 public class SetZoneIdIdTag extends SetZoneIdSupport {
 
-    /**
-     * Sets the value attribute.
-     * 
-     * @param value  the value
-     */
-    public void setValue(Object value) {
-        this.value = value;
-    }
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * Sets the value attribute.
+	 * 
+	 * @param value the value
+	 */
+	public void setValue(Object value) {
+		this.value = value;
+	}
 
 }

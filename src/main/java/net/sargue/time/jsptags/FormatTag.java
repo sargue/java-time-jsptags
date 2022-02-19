@@ -16,7 +16,8 @@
  */
 package net.sargue.time.jsptags;
 
-import javax.servlet.jsp.JspTagException;
+import jakarta.servlet.jsp.JspTagException;
+
 import java.time.ZoneId;
 import java.util.Locale;
 
@@ -29,72 +30,74 @@ import java.util.Locale;
  * @author Jim Newsham
  * @author Sergi Baila
  */
-@SuppressWarnings("UnusedDeclaration")
-public class FormatTag extends FormatSupport {
+ @SuppressWarnings("UnusedDeclaration")
+ public class FormatTag extends FormatSupport {
 
-    /**
-     * Sets the value attribute.
-     *
-     * @param value  the value
-     */
-    public void setValue(Object value) {
-        this.value = value;
-    }
+	private static final long serialVersionUID = 1L;
 
-    /**
-     * Sets the style attribute.
-     *
-     * @param style  the style
-     */
-    public void setStyle(String style) {
-        this.style = style;
-    }
+	/**
+	 * Sets the value attribute.
+	 *
+	 * @param value the value
+	 */
+	public void setValue(Object value) {
+		this.value = value;
+	}
 
-    /**
-     * Sets the pattern attribute.
-     *
-     * @param pattern  the pattern
-     */
-    public void setPattern(String pattern) {
-        this.pattern = pattern;
-    }
+	/**
+	 * Sets the style attribute.
+	 *
+	 * @param style the style
+	 */
+	public void setStyle(String style) {
+		this.style = style;
+	}
 
-    /**
-     * Sets the zone attribute.
-     *
-     * @param dtz  the zone
-     * @throws JspTagException incorrect zone or dtz parameter
-     */
-    public void setZoneId(Object dtz) throws JspTagException {
-        if (dtz == null || (dtz instanceof String && ((String) dtz).isEmpty())) {
-            this.zoneId = null;
-        } else if (dtz instanceof ZoneId) {
-            this.zoneId = (ZoneId) dtz;
-        } else if (dtz instanceof String) {
-            try {
-                this.zoneId = ZoneId.of((String) dtz);
-            } catch (IllegalArgumentException iae) {
-                throw new JspTagException("Incorrect Zone: " + dtz);
-            }
-        } else
-            throw new JspTagException("Can only accept ZoneId or String objects.");
-    }
+	/**
+	 * Sets the pattern attribute.
+	 *
+	 * @param pattern the pattern
+	 */
+	public void setPattern(String pattern) {
+		this.pattern = pattern;
+	}
 
-    /**
-     * Sets the style attribute.
-     *
-     * @param loc  the locale
-     * @throws JspTagException parameter not a Locale or String
-     */
-    public void setLocale(Object loc) throws JspTagException {
-        if (loc == null) {
-            this.locale = null;
-        } else if (loc instanceof Locale) {
-            this.locale = (Locale) loc;
-        } else if (loc instanceof String) {
-            this.locale = Util.parseLocale((String) loc);
-        } else
-            throw new JspTagException("Can only accept Locale or String objects.");
-    }
+	/**
+	 * Sets the zone attribute.
+	 *
+	 * @param dtz the zone
+	 * @throws JspTagException incorrect zone or dtz parameter
+	 */
+	public void setZoneId(Object dtz) throws JspTagException {
+		if (dtz == null || (dtz instanceof String && ((String) dtz).isEmpty())) {
+			this.zoneId = null;
+		} else if (dtz instanceof ZoneId) {
+			this.zoneId = (ZoneId) dtz;
+		} else if (dtz instanceof String) {
+			try {
+				this.zoneId = ZoneId.of((String) dtz);
+			} catch (IllegalArgumentException iae) {
+				throw new JspTagException("Incorrect Zone: " + dtz);
+			}
+		} else
+			throw new JspTagException("Can only accept ZoneId or String objects.");
+	}
+
+	/**
+	 * Sets the style attribute.
+	 *
+	 * @param loc the locale
+	 * @throws JspTagException parameter not a Locale or String
+	 */
+	public void setLocale(Object loc) throws JspTagException {
+		if (loc == null) {
+			this.locale = null;
+		} else if (loc instanceof Locale) {
+			this.locale = (Locale) loc;
+		} else if (loc instanceof String) {
+			this.locale = Util.parseLocale((String) loc);
+		} else
+			throw new JspTagException("Can only accept Locale or String objects.");
+	}
 
 }

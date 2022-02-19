@@ -29,10 +29,10 @@ library and almost exactly as the tags in the original Joda-Time JSP Tags.
 Requirements
 ------------
 
-* Java 8
-* Servlet 2.4
-* JSP 2.0
-* JSTL 1.1
+* Java 17
+* Servlet 5.0
+* JSP 3.0
+* JSTL 2.0
 
 Usage
 -----
@@ -40,7 +40,7 @@ Usage
 Add the dependency to your project:
 
 ### Gradle
-`compile 'net.sargue:java-time-jsptags:1.1.4'`
+`compile 'net.sargue:java-time-jsptags:2.0.0'`
 
 ### Maven
 
@@ -48,7 +48,7 @@ Add the dependency to your project:
 <dependency>
     <groupId>net.sargue</groupId>
     <artifactId>java-time-jsptags</artifactId>
-    <version>1.1.4</version>
+    <version>2.0.0</version>
 </dependency>
 ```
 
@@ -264,6 +264,11 @@ Build is based on gradle. See build.gradle included in the repository.
 
 Changelog
 ---------
+
+### v2.0.0
+
+Updated for jakarta package names for J2EE classes.
+Requires Java 17 now due to dependency on spring-test 6.0.
 
 ### v1.1.4
 Made helper method public [by request](https://github.com/sargue/java-time-jsptags/issues/7).
