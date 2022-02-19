@@ -16,17 +16,17 @@
  */
 package net.sargue.time.jsptags;
 
+import jakarta.servlet.jsp.JspException;
+import jakarta.servlet.jsp.JspTagException;
+import jakarta.servlet.jsp.PageContext;
+import jakarta.servlet.jsp.tagext.TagSupport;
+
 import java.io.IOException;
 import java.text.DateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
 import java.util.Locale;
-
-import jakarta.servlet.jsp.JspException;
-import jakarta.servlet.jsp.JspTagException;
-import jakarta.servlet.jsp.PageContext;
-import jakarta.servlet.jsp.tagext.TagSupport;
 
 /**
  * Support for tag handlers for &lt;formatDate&gt;, the date and time
@@ -83,7 +83,7 @@ public abstract class FormatSupport extends TagSupport {
 		this.scope = Util.getScope(scope);
 	}
 
-	/**
+	/*
 	 * Formats the given instant or partial.
 	 */
 	public int doEndTag() throws JspException {

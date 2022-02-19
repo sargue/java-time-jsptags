@@ -209,7 +209,7 @@ public abstract class ParseSupport extends BodyTagSupport {
                 TemporalAccessor parsed;
                 try {
                         parsed = formatter.parse(input, temporalQuery());
-                } catch (final DateTimeParseException e) {
+                } catch (DateTimeParseException e) {
                         throw new JspException(Resources.getMessage(
                                 "PARSE_DATE_PARSE_ERROR", input), e);
                 }

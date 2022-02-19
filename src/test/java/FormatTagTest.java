@@ -1,6 +1,3 @@
-import static org.junit.Assert.assertEquals;
-
-
 import net.sargue.time.jsptags.FormatTag;
 import org.junit.Before;
 import org.junit.Test;

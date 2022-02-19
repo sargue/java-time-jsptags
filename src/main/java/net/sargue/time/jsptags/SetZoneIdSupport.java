@@ -57,20 +57,11 @@ public abstract class SetZoneIdSupport extends TagSupport {
 		scope = PageContext.PAGE_SCOPE;
 	}
 
-	/**
-	 * 
-	 * @param scope the scope to store the variable in
-	 * @see #setVar(String)
-	 */
         @SuppressWarnings("UnusedDeclaration")
 	public void setScope(String scope) {
 		this.scope = Util.getScope(scope);
 	}
 
-	/**
-	 * 
-	 * @param var the variable to store the result in
-	 */
         @SuppressWarnings("UnusedDeclaration")
 	public void setVar(String var) {
 		this.var = var;

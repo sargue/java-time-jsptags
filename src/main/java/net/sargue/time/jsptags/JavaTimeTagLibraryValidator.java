@@ -53,8 +53,8 @@ public class JavaTimeTagLibraryValidator extends TagLibraryValidator {
         /*
          * Expression syntax validation has been disabled since when I ported this
          * code over from Jakarta Taglib, I wanted to reduce dependencies. As I
-         * understand it, JSP 2.0 containers take over the responsibility
-         * of handling EL code (both in attribute tags, and externally), so this
+         * understand it, JSP 2.0 containers take over the responsibility of
+         * handling EL code (both in attribute tags, and externally), so this
          * shouldn't be a problem unless you're using something old. If you want to
          * restore this validation, you must uncomment the various lines in this
          * source, include the Jakarta Taglib's standard.jar library at build and
@@ -74,7 +74,7 @@ public class JavaTimeTagLibraryValidator extends TagLibraryValidator {
          * multiple Stacks, an understanding of 'depth', and so on all are important
          * as we recover necessary state upon each callback. This TLV demonstrates
          * various techniques, from the general "how do I use a SAX parser for a
-         * various techniques, from the parameters and then validate?" But also,
+         * TLV?" to "how do I read my init parameters and then validate?" But also,
          * the specific SAX methodology was kept as general as possible to allow for
          * experimentation and flexibility.
          */
@@ -219,7 +219,7 @@ public class JavaTimeTagLibraryValidator extends TagLibraryValidator {
 
         // returns true if the 'scope' attribute is valid
         protected boolean hasNoInvalidScope(Attributes a) {
-                final String scope = a.getValue(SCOPE);
+                String scope = a.getValue(SCOPE);
                 return !((scope != null) && !scope.equals(PAGE_SCOPE)
                          && !scope.equals(REQUEST_SCOPE) && !scope.equals(SESSION_SCOPE)
                          && !scope.equals(APPLICATION_SCOPE));
@@ -236,7 +236,7 @@ public class JavaTimeTagLibraryValidator extends TagLibraryValidator {
         }
 
         // retrieves the local part of a QName
-        protected static String getLocalPart(String qname) {
+        protected String getLocalPart(String qname) {
                 int colon = qname.indexOf(":");
                 return (colon == -1) ? qname : qname.substring(colon + 1);
         }

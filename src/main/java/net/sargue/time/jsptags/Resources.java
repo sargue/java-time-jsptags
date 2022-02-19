@@ -21,8 +21,7 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 /**
- * <p>
- * Provides locale-neutral access to string resources. Only the
+ * <p>Provides locale-neutral access to string resources. Only the
  * documentation and code are in English. :-)
  *
  * <p>The major goal, aside from globalization, is convenience.
@@ -33,7 +32,6 @@ import java.util.ResourceBundle;
  * </pre>
  *
  * <p>Access to resources with one parameter works like</p>
- * 
  * <pre>
  * Resources.getMessage(MESSAGE_NAME, arg1);
  * </pre>
