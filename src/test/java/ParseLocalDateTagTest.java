@@ -1,7 +1,6 @@
 import net.sargue.time.jsptags.ParseInstantTag;
 import net.sargue.time.jsptags.ParseLocalDateTag;
 import org.junit.After;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,7 +12,6 @@ import jakarta.servlet.jsp.JspException;
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
 import java.util.Locale;
-
 
 /**
  * Basic parse tests.

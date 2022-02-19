@@ -26,7 +26,6 @@ import java.util.ResourceBundle;
  *
  * <p>The major goal, aside from globalization, is convenience.
  * Access to resources with no parameters is made in the form:</p>
- * 
  * <pre>
  * Resources.getMessage(MESSAGE_NAME);
  * </pre>
