@@ -1,14 +1,11 @@
-import net.sargue.time.jsptags.ParseInstantTag;
+import jakarta.servlet.jsp.JspException;
 import net.sargue.time.jsptags.ParseLocalDateTag;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockPageContext;
 import org.springframework.mock.web.MockServletContext;
 
-import jakarta.servlet.jsp.JspException;
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
 import java.util.Locale;

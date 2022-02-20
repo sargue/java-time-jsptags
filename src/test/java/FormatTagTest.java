@@ -1,13 +1,24 @@
+import jakarta.servlet.jsp.JspException;
 import net.sargue.time.jsptags.FormatTag;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.mock.web.MockPageContext;
 import org.springframework.mock.web.MockServletContext;
 
-import jakarta.servlet.jsp.JspException;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.time.*;
+import java.time.DayOfWeek;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.Month;
+import java.time.MonthDay;
+import java.time.OffsetDateTime;
+import java.time.OffsetTime;
+import java.time.Year;
+import java.time.YearMonth;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.WeekFields;
 import java.util.Locale;
@@ -27,7 +38,7 @@ public class FormatTagTest {
 	private MockServletContext mockServletContext;
 
 	@Before
-	public void setup() throws UnsupportedEncodingException {
+	public void setup() {
 		Locale.setDefault(Locale.forLanguageTag("ca"));
 		TimeZone.setDefault(TimeZone.getTimeZone("Europe/Paris"));
 		mockServletContext = new MockServletContext();
@@ -179,7 +190,6 @@ public class FormatTagTest {
 		assertEquals("11:04:47 (Hora estàndard del Centre d’Europa)", format(zonedDateTime, null, "-F"));
 
 		ZonedDateTime pstZonedDateTime = zonedDateTime.withZoneSameInstant(ZoneId.of("America/Los_Angeles"));
-		System.out.println(pstZonedDateTime);
 		assertEquals("6/11/15", format(pstZonedDateTime, null, "S-"));
 		assertEquals("6 de nov. 2015", format(pstZonedDateTime, null, "M-"));
 		// check that default matches medium
