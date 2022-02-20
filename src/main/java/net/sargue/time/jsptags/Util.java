@@ -111,7 +111,7 @@ public class Util {
      * See parseLocale(String, String) for details.
      *
      * @param locale the locale string to parse
-     * @return <tt>java.util.Locale</tt> object corresponding to the given
+     * @return {@link java.util.Locale} object corresponding to the given
      * locale string, or the null if the locale string is null or empty
      */
     public static Locale parseLocale(String locale) {
@@ -120,7 +120,7 @@ public class Util {
 
     /**
      * Parses the given locale string into its language and (optionally) country
-     * components, and returns the corresponding <tt>java.util.Locale</tt>
+     * components, and returns the corresponding {@link java.util.Locale}
      * object.
      * 
      * If the given locale string is null or empty, a null value is returned.
@@ -128,7 +128,7 @@ public class Util {
      * @param locale the locale string to parse
      * @param variant the variant
      * 
-     * @return <tt>java.util.Locale</tt> object corresponding to the given
+     * @return {@link java.util.Locale} object corresponding to the given
      * locale string, or the null if the locale string is null or empty
      * 
      * @throws IllegalArgumentException if the given locale does not have a
@@ -413,14 +413,14 @@ public class Util {
      * Check if a match exists between the ordered set of preferred locales and
      * the available locales, for the given base name. The set of preferred
      * locales consists of a single locale (if the
-     * <tt>javax.servlet.jsp.jstl.fmt.locale</tt> configuration setting is
+     * {@link Config#FMT_LOCALE} configuration setting is
      * present) or is equal to the client's preferred locales determined from
      * the client's browser settings.
      * 
      * <p>
      * If no match was found in the previous step, check if a match exists
      * between the fallback locale (given by the
-     * <tt>javax.servlet.jsp.jstl.fmt.fallbackLocale</tt> configuration
+     * {@link Config#FMT_FALLBACK_LOCALE} configuration
      * setting) and the available locales, for the given base name.
      * 
      * @param pc Page in which the resource bundle with the given base
