@@ -1,4 +1,0 @@
-language: java
-install: /bin/true
-jdk:
-- oraclejdk8
