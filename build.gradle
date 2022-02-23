@@ -15,6 +15,12 @@ java {
     withSourcesJar()
 }
 
+allprojects {
+    tasks.withType(Javadoc) {
+        options.addBooleanOption('Xdoclint:none', true)
+    }
+}
+
 repositories {
     mavenCentral()
     // for snapshot release of spring that includes jakarta classes
