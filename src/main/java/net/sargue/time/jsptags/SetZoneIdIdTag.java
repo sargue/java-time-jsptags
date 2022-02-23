@@ -27,15 +27,15 @@ package net.sargue.time.jsptags;
  */
 public class SetZoneIdIdTag extends SetZoneIdSupport {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * Sets the value attribute.
-	 * 
-	 * @param value the value
-	 */
-	public void setValue(Object value) {
-		this.value = value;
-	}
+    /**
+     * Sets the value attribute.
+     *
+     * @param value the value
+     */
+    public void setValue(Object value) {
+        this.value = value;
+    }
 
 }

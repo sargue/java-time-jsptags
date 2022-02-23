@@ -34,9 +34,9 @@ import java.time.temporal.TemporalQuery;
 
 public class ParseLocalTimeTag extends ParseSupport {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Override
+    @Override
     protected TemporalQuery<TemporalAccessor> temporalQuery() {
         return LocalTime::from;
     }

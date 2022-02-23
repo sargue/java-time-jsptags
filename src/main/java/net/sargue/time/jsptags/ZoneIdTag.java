@@ -26,11 +26,11 @@ import jakarta.servlet.jsp.JspTagException;
  */
 public class ZoneIdTag extends ZoneIdSupport {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
         // for tag attribute
-	public void setValue(Object value) throws JspTagException {
-		this.value = value;
-	}
+    public void setValue(Object value) throws JspTagException {
+        this.value = value;
+    }
 
 }

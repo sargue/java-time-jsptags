@@ -33,10 +33,10 @@ import java.time.temporal.TemporalQuery;
 
 public class ParseLocalDateTag extends ParseSupport {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Override
-	protected TemporalQuery<TemporalAccessor> temporalQuery() {
-		return LocalDate::from;
-	}
+    @Override
+    protected TemporalQuery<TemporalAccessor> temporalQuery() {
+        return LocalDate::from;
+    }
 }
