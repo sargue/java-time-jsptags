@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'net.sargue'
-version = '2.0.0'
+version = '2.0.2'
 
 java {
     toolchain {
@@ -30,10 +30,11 @@ repositories {
 }
 
 dependencies {
-    api(group: "jakarta.servlet.jsp", name: "jakarta.servlet.jsp-api", version: "3.0.0")
-    api(group: "jakarta.servlet.jsp.jstl", name: "jakarta.servlet.jsp.jstl-api", version: "2.0.0")
-    
+    compileOnly(group: "jakarta.servlet.jsp", name: "jakarta.servlet.jsp-api", version: "3.0.0")
+    compileOnly(group: "jakarta.servlet.jsp.jstl", name: "jakarta.servlet.jsp.jstl-api", version: "2.0.0")
 
+    testImplementation(group: "jakarta.servlet.jsp", name: "jakarta.servlet.jsp-api", version: "3.0.0")
+    testImplementation(group: "jakarta.servlet.jsp.jstl", name: "jakarta.servlet.jsp.jstl-api", version: "2.0.0")
     testImplementation(group: "junit", name: "junit", version: "4.13.2")
     testImplementation(group: "org.springframework", name: "spring-test", version: "6.0.0-M2")
 }

@@ -277,6 +277,10 @@ Build is based on gradle. See `build.gradle` included in the repository.
 Changelog
 ---------
 
+### v2.0.2
+
+Changed dependency types to "compileOnly" so this library is not leaking specific JSP/JSTL libraries.
+
 ### v2.0.0
 
 Updated for jakarta package names for J2EE classes.
